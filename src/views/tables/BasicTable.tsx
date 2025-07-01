@@ -19,6 +19,7 @@ function App() {
 
 // const baseUrl = "https://localhost:7002/Vendedor"; // funciona en local se debe crear .env con REACT_APP_API_URL=http://localhost:7002/Vendedor 
 const baseUrl = process.env.REACT_APP_API_URL ?? "https://localhost:7002/Vendedor";
+console.log("URL que está usando el front:", baseUrl);
 const [data, setData] = useState<Vendedor[]>([]);
 const [modalInsertar, setModalInsertar] = useState(false);
 const [modalEditar, setModalEditar] = useState(false); 
