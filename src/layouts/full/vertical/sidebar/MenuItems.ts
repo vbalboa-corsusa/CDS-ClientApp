@@ -20,7 +20,6 @@ const Menuitems: MenuitemsType[] = [
     navlabel: true,
     subheader: 'Personal',
   },
-
   {
     id: uniqueId(),
     title: 'Dashboard',
@@ -28,115 +27,48 @@ const Menuitems: MenuitemsType[] = [
     href: '/',
   },
   {
-    id: uniqueId(),
-    title: 'General',
-    icon: 'screencast-2-linear',
-    href: 'https://materialpro-react-main.netlify.app/',
-    chip: "Pro",
+    navlabel: true,
+    subheader: 'Utilidades',
   },
-  {
+    {
     id: uniqueId(),
-    title: 'Classic',
-    icon: 'atom-linear',
-    href: 'https://materialpro-react-main.netlify.app/dashboards/classic',
-    chip: "Pro",
-  },
-  {
-    id: uniqueId(),
-    title: 'Analytical',
-    icon: 'box-minimalistic-linear',
-    href: 'https://materialpro-react-main.netlify.app/dashboards/analytical',
-    chip: "Pro",
-  },
-  {
-    id: uniqueId(),
-    title: 'Campaign',
-    icon: 'buildings-2-linear',
-    href: 'https://materialpro-react-main.netlify.app/dashboards/campaign',
-    chip: "Pro",
-  },
-  {
-    id: uniqueId(),
-    title: 'Modern',
-    icon: 'basketball-linear',
-    href: 'https://materialpro-react-main.netlify.app/dashboards/modern',
-    chip: "Pro",
-  },
-  {
-    id: uniqueId(),
-    title: 'eCommerce',
-    icon: 'cart-large-2-linear',
-    href: 'https://materialpro-react-main.netlify.app/dashboards/ecommerce',
-    chip: "Pro",
-  },
-  {
-    id: uniqueId(),
-    title: 'Front pages',
-    icon: 'home-angle-linear',
-    href: 'https://materialpro-react-main.netlify.app/frontend-pages/',
-    chip: "Pro",
+    title: 'Orden de Pedido',
+    icon: "box-minimalistic-bold-duotone",
+    href: '/form-layouts',
     children: [
       {
         id: uniqueId(),
-        title: 'Homepage',
+        title: 'Crear registro',
         icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/frontend-pages/homepage',
-        chip: "Pro",
+        href: '/form-layouts',
       },
       {
         id: uniqueId(),
-        title: 'About Us',
+        title: 'Buscar registro',
         icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/frontend-pages/about',
-        chip: "Pro",
-      },
-      {
-        id: uniqueId(),
-        title: 'Blog',
-        icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/frontend-pages/blog',
-        chip: "Pro",
-      },
-      {
-        id: uniqueId(),
-        title: 'Blog Details',
-        icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/frontend-pages/blog/detail/streaming-video-way-before-it-was-cool-go-dark-tomorrow',
-        chip: "Pro",
-      },
-      {
-        id: uniqueId(),
-        title: 'Contact',
-        icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/frontend-pages/contact',
-        chip: "Pro",
-      },
-      {
-        id: uniqueId(),
-        title: 'Portfolio',
-        icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/frontend-pages/portfolio',
-        chip: "Pro",
-      },
-      {
-        id: uniqueId(),
-        title: 'Pricing',
-        icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/frontend-pages/pricing',
-        chip: "Pro",
+        href: '/form-layouts/fb-elements/FbDefaultSearch',
       },
     ],
   },
-
-  {
-    navlabel: true,
-    subheader: 'Utilities',
+  /*
+    {
+    id: uniqueId(),
+    title: 'Orden de Pedido',
+    icon: "box-minimalistic-bold-duotone",
+    href: '/form-layouts',
   },
+  */
   {
     id: uniqueId(),
-    title: 'Autocomplete',
-    icon: "sort-by-alphabet-outline",
+    title: 'Orden de Compra',
+    icon: "box-minimalistic-bold-duotone",
     href: '/form-elements/autocomplete',
+  },
+   {
+    id: uniqueId(),
+    title: 'Vendedor',
+    icon: "box-minimalistic-bold-duotone",
+    href: '/tables/basic-table',
   },
   {
     id: uniqueId(),
@@ -156,29 +88,19 @@ const Menuitems: MenuitemsType[] = [
     icon: "radar-outline",
     href: '/form-elements/radio',
   },
+  /*
   {
     id: uniqueId(),
     title: 'Slider',
     icon: "slider-vertical-minimalistic-outline",
     href: '/form-elements/slider',
   },
+  */
   {
     id: uniqueId(),
     title: 'Switch',
     icon: "shield-minimalistic-outline",
     href: '/form-elements/switch',
-  },
-  {
-    id: uniqueId(),
-    title: 'Tables',
-    icon: "menu-dots-square-line-duotone",
-    href: '/tables/basic-table',
-  },
-  {
-    id: uniqueId(),
-    title: 'Form Layouts',
-    icon: "window-frame-linear",
-    href: '/form-layouts',
   },
   {
     id: uniqueId(),
@@ -192,13 +114,15 @@ const Menuitems: MenuitemsType[] = [
     icon: "box-minimalistic-bold-duotone",
     href: '/ui/shadow',
   },
+  /*
   {
     id: uniqueId(),
     title: 'Sample Page',
     icon: "window-frame-broken",
     href: '/sample-page',
   },
-
+  */
+  /*
   {
     navlabel: true,
     subheader: 'Apps',
@@ -254,43 +178,7 @@ const Menuitems: MenuitemsType[] = [
     href: 'https://materialpro-react-main.netlify.app/apps/kanban',
     chip: "Pro",
   },
-  {
-    id: uniqueId(),
-    title: 'Users',
-    icon: 'user-circle-linear',
-    href: 'https://materialpro-react-main.netlify.app/apps/user-profile/profile',
-    chip: "Pro",
-    children: [
-      {
-        id: uniqueId(),
-        title: 'Profile',
-        icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/apps/user-profile/profile',
-        chip: "Pro",
-      },
-      {
-        id: uniqueId(),
-        title: 'Followers',
-        icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/apps/user-profile/followers',
-        chip: "Pro",
-      },
-      {
-        id: uniqueId(),
-        title: 'Friends',
-        icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/apps/user-profile/friends',
-        chip: "Pro",
-      },
-      {
-        id: uniqueId(),
-        title: 'Gallery',
-        icon: 'stop-circle-line-duotone',
-        href: 'https://materialpro-react-main.netlify.app/apps/user-profile/gallery',
-        chip: "Pro",
-      },
-    ],
-  },
+
   {
     id: uniqueId(),
     title: 'Blog',
@@ -449,9 +337,9 @@ const Menuitems: MenuitemsType[] = [
         chip: "Pro",
       },
     ]
-  },
+  },*/
 
-
+  /*
   {
     navlabel: true,
     subheader: 'Forms',
@@ -563,6 +451,7 @@ const Menuitems: MenuitemsType[] = [
     href: 'https://materialpro-react-main.netlify.app/forms/form-tiptap',
     chip: "Pro",
   },
+  
   {
     navlabel: true,
     subheader: 'Widgets',
@@ -738,6 +627,8 @@ const Menuitems: MenuitemsType[] = [
       },
     ],
   },
+  */
+ /*
   {
     navlabel: true,
     subheader: 'UI',
@@ -835,7 +726,8 @@ const Menuitems: MenuitemsType[] = [
       },
     ],
   },
-
+  */
+  /*
   {
     navlabel: true,
     subheader: 'Charts',
@@ -900,6 +792,7 @@ const Menuitems: MenuitemsType[] = [
     href: 'https://materialpro-react-main.netlify.app/icons',
     chip: "Pro",
   },
+  /*
   {
     navlabel: true,
     subheader: 'Mui Charts',
@@ -1011,6 +904,7 @@ const Menuitems: MenuitemsType[] = [
       },
     ],
   },
+  */
   {
     navlabel: true,
     subheader: 'Auth',
@@ -1027,6 +921,8 @@ const Menuitems: MenuitemsType[] = [
     icon: "shield-user-linear",
     href: '/auth/register',
   },
+  
+  /*
   {
     id: uniqueId(),
     title: 'Auth Pages',
@@ -1111,8 +1007,9 @@ const Menuitems: MenuitemsType[] = [
       },
     ]
   },
+  */
   
-
+  /*
   {
     navlabel: true,
     subheader: 'Other',
@@ -1214,7 +1111,7 @@ const Menuitems: MenuitemsType[] = [
     href: 'https://google.com',
     chip: "Pro",
   },
-
+*/
 
 ];
 
