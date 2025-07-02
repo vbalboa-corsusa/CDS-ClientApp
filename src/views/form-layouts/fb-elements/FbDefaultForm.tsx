@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TextField,
   FormControlLabel,
@@ -18,7 +18,7 @@ import {
 import BaseCard from '../../../components/BaseCard/BaseCard';
 const numbers = [
   {
-    value: 'one',
+    value: 'Luis Suarez',
     label: 'One',
   },
   {
@@ -35,42 +35,82 @@ const numbers = [
   },
 ];
 
-/* BUSCADOR 
-import { Container, HeaderContainer, Table, SearchInput } from "./"; */
-
 const FbDefaultForm = () => {
-  const [state, setState] = React.useState({
+
+  const [vendedor, setVendedor] = useState<any[]>([]);
+  const [formdata, setFormdata] = useState({ vendedor: '' });
+
+  useEffect(() => {
+    import('axios').then(({ default: axios }) => {
+      axios.get('http://localhost:7200/Vendedor')
+        .then((res) => {
+          setVendedor(res.data as any[]);
+        })
+        .catch((err) => {
+          console.error('Error al obtener vendedor:', err);
+        });
+    });
+  }, []);
+
+  /*
+  interface FormData {
+    vendedor: string;
+  }
+    */
+
+  interface VendedorOption {
+    value: string;
+    label: string;
+  }
+
+  interface CheckboxState {
+    checkedA: boolean;
+    checkedB: boolean;
+    checkedC: boolean;
+  }
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormdata({
+      ...formdata,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const [state, setState] = React.useState<CheckboxState>({
     checkedA: false,
     checkedB: false,
     checkedC: false,
   });
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
   /*
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState<string>('');
 
-  const handleChange2 = (event: any) => {
+  const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
+  */
 
-  const [cliente] = React.useState('');
-  const [formaPago] = React.useState('');
-  const [moneda] = React.useState('');
-  const [vendedor] = React.useState('');
-  const [vendedor1] = React.useState('');
-  const [vendedor2] = React.useState('');
-  const [lider] = React.useState('');
+  /*const [vendedor, setVendedor] = React.useState<string>('');*/
 
-  const [number, setNumber] = React.useState('');
+  /*
+  const [formaPago] = React.useState<string>('');
+  const [moneda] = React.useState<string>('');
+  const [vendedor] = React.useState<string>('');
+  const [vendedor1] = React.useState<string>('');
+  const [vendedor2] = React.useState<string>('');
+  const [lider] = React.useState<string>('');
 
-  const handleChange3 = (event: any) => {
+  const [number, setNumber] = React.useState<string>('');
+
+  const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNumber(event.target.value);
   };
   
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = React.useState<boolean>(true);
   */
 
   return (
@@ -95,7 +135,7 @@ const FbDefaultForm = () => {
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
+            {numbers.map((option: VendedorOption) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -176,7 +216,7 @@ const FbDefaultForm = () => {
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
+            {numbers.map((option: VendedorOption) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -195,7 +235,7 @@ const FbDefaultForm = () => {
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
+            {numbers.map((option: VendedorOption) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -224,13 +264,13 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Vendedor"
-            //value={vendedor}
-            //onChange={handleChange3}
+            value={vendedor}
+            onChange={handleSelectChange}
             sx={{
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
+            {vendedor.map((option: VendedorOption) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -249,7 +289,7 @@ const FbDefaultForm = () => {
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
+            {numbers.map((option: VendedorOption) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -268,7 +308,7 @@ const FbDefaultForm = () => {
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
+            {numbers.map((option: VendedorOption) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -287,7 +327,7 @@ const FbDefaultForm = () => {
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
+            {numbers.map((option: VendedorOption) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -362,3 +402,4 @@ const FbDefaultForm = () => {
 };
 
 export default FbDefaultForm;
+
