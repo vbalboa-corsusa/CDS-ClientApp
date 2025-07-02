@@ -4,10 +4,12 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
+  /*
   Grid,
   RadioGroup,
   Radio,
   FormControl,
+  */
   MenuItem,
   Box,
 } from '@mui/material';
@@ -47,6 +49,7 @@ const FbDefaultForm = () => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
+  /*
   const [value, setValue] = React.useState('');
 
   const handleChange2 = (event: any) => {
@@ -66,8 +69,9 @@ const FbDefaultForm = () => {
   const handleChange3 = (event: any) => {
     setNumber(event.target.value);
   };
-
+  
   const [checked, setChecked] = React.useState(true);
+  */
 
   return (
     <div>
@@ -85,8 +89,8 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Cliente"
-            value={cliente}
-            onChange={handleChange3}
+            //value={cliente}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -166,8 +170,8 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Forma de Pago"
-            value={formaPago}
-            onChange={handleChange3}
+            //value={formaPago}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -185,8 +189,8 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Moneda"
-            value={moneda}
-            onChange={handleChange3}
+            //value={moneda}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -220,8 +224,8 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Vendedor"
-            value={vendedor}
-            onChange={handleChange3}
+            //value={vendedor}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -239,8 +243,8 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Vendedor 1"
-            value={vendedor1}
-            onChange={handleChange3}
+            //value={vendedor1}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -258,8 +262,8 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Vendedor 2"
-            value={vendedor2}
-            onChange={handleChange3}
+            //value={vendedor2}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -277,8 +281,8 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Lider"
-            value={lider}
-            onChange={handleChange3}
+            //value={lider}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -330,7 +334,7 @@ const FbDefaultForm = () => {
           <FormControlLabel
               control={
               <Checkbox
-                checked={checked}
+                //checked={checked}
                 onChange={handleChange}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
@@ -340,103 +344,6 @@ const FbDefaultForm = () => {
 
         </Box>
 
-          {/* <TextField
-            id="outlined-multiline-static"
-            label="Descripción"
-            multiline
-            rows={6}
-            variant="outlined"
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-          /> */}
-          
-          {/* <TextField
-            id="readonly-text"
-            label="Read Only"
-            defaultValue=""
-            slotProps={{
-              input: {
-                readOnly: true,
-              },
-            }}
-            variant="outlined"
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-          /> */}
-          
-          {/* <Grid
-            container
-            spacing={0}
-            sx={{
-              mb: 2,
-            }}
-          >
-            <Grid size={{ lg: 4, md: 6, sm: 12 }}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedA}
-                    onChange={handleChange}
-                    name="checkedA"
-                    color="primary"
-                  />
-                }
-                label="Check this custom checkbox"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedB}
-                    onChange={handleChange}
-                    name="checkedB"
-                    color="primary"
-                  />
-                }
-                label="Check this custom checkbox"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedC}
-                    onChange={handleChange}
-                    name="checkedC"
-                    color="primary"
-                  />
-                }
-                label="Check this custom checkbox"
-              />
-            </Grid>
-            <Grid size={{ lg: 4, md: 6, sm: 12 }}>
-              <FormControl component="fieldset">
-                <RadioGroup
-                  aria-label="gender"
-                  name="gender1"
-                  value={value}
-                  onChange={handleChange2}
-                >
-                  <FormControlLabel
-                    value="radio1"
-                    control={<Radio />}
-                    label="Toggle this custom radio"
-                  />
-                  <FormControlLabel
-                    value="radio2"
-                    control={<Radio />}
-                    label="Toggle this custom radio"
-                  />
-                  <FormControlLabel
-                    value="radio3"
-                    control={<Radio />}
-                    label="Toggle this custom radio"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
-          </Grid> */}
           <div>
           
           <Button
