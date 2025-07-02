@@ -13,7 +13,7 @@ const SizesAutocomplete = () => {
         sx={{
           mb: 2,
         }}
-        renderInput={(params) => <TextField {...params} label="Size Medium" />}
+        renderInput={(params) => <TextField {...params} label="Mediano" />}
       />
       <Autocomplete
         disablePortal
@@ -21,7 +21,7 @@ const SizesAutocomplete = () => {
         options={top100Films}
         fullWidth
         size="small"
-        renderInput={(params) => <TextField {...params} label="Size Small" />}
+        renderInput={(params) => <TextField {...params} label="Pequeño" />}
       />
     </BaseCard>
   );
