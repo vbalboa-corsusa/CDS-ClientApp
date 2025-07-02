@@ -16,8 +16,8 @@ const MultipleValuesAutocomplete = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="filterSelectedOptions"
-            placeholder="Favorites"
+            label="Seleccionar una opción"
+            placeholder="Favoritos"
           />
         )}
       />

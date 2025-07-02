@@ -29,13 +29,13 @@ const ProfileCard = () => {
             sx={{ width: 100, height: 100, m: "0 auto" }}
           />
           <Typography variant="h5" fontSize='24px' mt={4} mb={1}>
-            Angela Dominic
+            Renzo Ascona
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" mb={2}>
-            Web Designer & Developer
+            Desarrollador Low Code
           </Typography>
           <Button variant="contained" color="primary">
-            Follow
+            Seguir
           </Button>
         </Box>
         <Divider />
@@ -48,19 +48,19 @@ const ProfileCard = () => {
           <Box textAlign="center">
             <Typography variant="h3">1,099</Typography>
             <Typography variant="subtitle2" color='textSecondary' fontSize="12px">
-              Articles
+              Articulos
             </Typography>
           </Box>
           <Box textAlign="center">
             <Typography variant="h3">23,469</Typography>
             <Typography variant="subtitle2" color='textSecondary' fontSize="12px">
-              Followers
+              Seguidores
             </Typography>
           </Box>
           <Box textAlign="center">
             <Typography variant="h3">6,035</Typography>
             <Typography variant="subtitle2" color='textSecondary' fontSize="12px">
-              Following
+              Siguiendo
             </Typography>
           </Box>
         </Stack>

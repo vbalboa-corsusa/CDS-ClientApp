@@ -29,7 +29,7 @@ const CheckboxesAutocomplete = () => {
         )}
         fullWidth
         renderInput={(params) => (
-          <TextField {...params} label="Checkboxes" placeholder="Favorites" />
+          <TextField {...params} label="Casilla de verificacion" placeholder="Seleccionar" />
         )}
       />
     </BaseCard>

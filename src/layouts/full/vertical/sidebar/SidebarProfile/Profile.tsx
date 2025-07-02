@@ -111,7 +111,7 @@ export const Profile = () => {
                 overflow: 'hidden',
               }}
             >
-              Markarn Doe
+              Renzo Ascona
             </Typography>
             <Box>
               <Tooltip title="User" placement="top">
@@ -138,7 +138,7 @@ export const Profile = () => {
               <Icon icon="solar:user-circle-line-duotone" height={22} />
             </Box>
             <Typography fontSize="15px" ml={1}>
-              My Profile
+              Mi Perfil
             </Typography>
           </MenuItem>
           <MenuItem onClick={handleClose} disableRipple>

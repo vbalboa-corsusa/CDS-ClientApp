@@ -9,7 +9,10 @@ import {
   Radio,
   FormControl,
   MenuItem,
+  Box,
 } from '@mui/material';
+
+
 import BaseCard from '../../../components/BaseCard/BaseCard';
 const numbers = [
   {
@@ -29,6 +32,9 @@ const numbers = [
     label: 'Four',
   },
 ];
+
+/* BUSCADOR 
+import { Container, HeaderContainer, Table, SearchInput } from "./"; */
 
 const FbDefaultForm = () => {
   const [state, setState] = React.useState({
@@ -53,59 +59,295 @@ const FbDefaultForm = () => {
     setNumber(event.target.value);
   };
 
+  const [checked, setChecked] = React.useState(true);
+
   return (
     <div>
       {/* ------------------------------------------------------------------------------------------------ */}
       {/* Basic Checkbox */}
       {/* ------------------------------------------------------------------------------------------------ */}
-      <BaseCard title="My Profile">
+
+        <BaseCard title="REGISTRO DE PEDIDOS">
+        
         <form>
+        <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
+          <TextField
+            fullWidth
+            id="standard-select-number"
+            variant="outlined"
+            select
+            label="Cliente"
+            value={number}
+            onChange={handleChange3}
+            sx={{
+              mb: 2,
+            }}
+          >
+            {numbers.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+
           <TextField
             id="default-value"
-            label="Default Text"
+            label="Cliente Final"
             variant="outlined"
-            defaultValue="George deo"
+            defaultValue=""
             fullWidth
             sx={{
               mb: 2,
             }}
           />
+
           <TextField
-            id="email-text"
-            label="Email"
-            type="email"
+            id="default-value"
+            label="Cliente Proveedor"
             variant="outlined"
+            defaultValue=""
             fullWidth
             sx={{
               mb: 2,
             }}
           />
-          <TextField
-            id="outlined-password-input"
-            label="Password"
-            type="password"
-            autoComplete="current-password"
+
+        </Box>
+        <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
+
+            <TextField
+            id="default-value"
+            label="Fecha de Recepción"
             variant="outlined"
+            defaultValue=""
             fullWidth
             sx={{
               mb: 2,
             }}
           />
+
           <TextField
+            id="default-value"
+            label="Fecha de Inicio"
+            variant="outlined"
+            defaultValue=""
+            fullWidth
+            sx={{
+              mb: 2,
+            }}
+          />
+
+          <TextField
+            id="default-value"
+            label="Fecha de Procesamiento VI"
+            variant="outlined"
+            defaultValue=""
+            fullWidth
+            sx={{
+              mb: 2,
+            }}
+          />
+
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
+
+          <TextField
+            fullWidth
+            id="standard-select-number"
+            variant="outlined"
+            select
+            label="Forma de Pago"
+            value={number}
+            onChange={handleChange3}
+            sx={{
+              mb: 2,
+            }}
+          >
+            {numbers.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            fullWidth
+            id="standard-select-number"
+            variant="outlined"
+            select
+            label="Moneda"
+            value={number}
+            onChange={handleChange3}
+            sx={{
+              mb: 2,
+            }}
+          >
+            {numbers.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          
+          <TextField
+            id="default-value"
+            label="Total sin IGV"
+            variant="outlined"
+            defaultValue=""
+            fullWidth
+            sx={{
+              mb: 2,
+            }}
+          />
+
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>          
+
+          <TextField
+            fullWidth
+            id="standard-select-number"
+            variant="outlined"
+            select
+            label="Vendedor"
+            value={number}
+            onChange={handleChange3}
+            sx={{
+              mb: 2,
+            }}
+          >
+            {numbers.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          
+          <TextField
+            fullWidth
+            id="standard-select-number"
+            variant="outlined"
+            select
+            label="Vendedor 1"
+            value={number}
+            onChange={handleChange3}
+            sx={{
+              mb: 2,
+            }}
+          >
+            {numbers.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            fullWidth
+            id="standard-select-number"
+            variant="outlined"
+            select
+            label="Vendedor 2"
+            value={number}
+            onChange={handleChange3}
+            sx={{
+              mb: 2,
+            }}
+          >
+            {numbers.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            fullWidth
+            id="standard-select-number"
+            variant="outlined"
+            select
+            label="Lider"
+            value={number}
+            onChange={handleChange3}
+            sx={{
+              mb: 2,
+            }}
+          >
+            {numbers.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>                    
+
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
+
+          <TextField
+            id="default-value"
+            label="N° de Operación"
+            variant="outlined"
+            defaultValue=""
+            fullWidth
+            sx={{
+              mb: 2,
+            }}
+          />
+
+            <TextField
+            id="default-value"
+            label="N° Referencia de Cliente"
+            variant="outlined"
+            defaultValue=""
+            fullWidth
+            sx={{
+              mb: 2,
+            }}
+          />          
+
+          <TextField
+            id="default-value"
+            label="Ubruta Cotización"
+            variant="outlined"
+            defaultValue=""
+            fullWidth
+            sx={{
+              mb: 2,
+            }}
+          />
+
+          <FormControlLabel
+              control={
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+              />
+              }
+              label="Comisión compartida"
+          />
+
+        </Box>
+
+          {/* <TextField
             id="outlined-multiline-static"
-            label="Textarea"
+            label="Descripción"
             multiline
-            rows={4}
+            rows={6}
             variant="outlined"
             fullWidth
             sx={{
               mb: 2,
             }}
-          />
-          <TextField
+          /> */}
+          
+          {/* <TextField
             id="readonly-text"
             label="Read Only"
-            defaultValue="Hello World"
+            defaultValue=""
             slotProps={{
               input: {
                 readOnly: true,
@@ -116,8 +358,9 @@ const FbDefaultForm = () => {
             sx={{
               mb: 2,
             }}
-          />
-          <Grid
+          /> */}
+          
+          {/* <Grid
             container
             spacing={0}
             sx={{
@@ -185,29 +428,17 @@ const FbDefaultForm = () => {
                 </RadioGroup>
               </FormControl>
             </Grid>
-          </Grid>
-          <TextField
-            fullWidth
-            id="standard-select-number"
-            variant="outlined"
-            select
-            label="Select"
-            value={number}
-            onChange={handleChange3}
-            sx={{
-              mb: 2,
-            }}
-          >
-            {numbers.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+          </Grid> */}
           <div>
-            <Button color="primary" variant="contained">
-              Submit
-            </Button>
+          
+          <Button
+            sx={{ display: 'flex', justifyContent: 'center', mx: 'auto', mt: 2 }}
+            color="primary"
+            variant="contained"
+            type="submit">
+              GUARDAR
+          </Button>
+
           </div>
         </form>
       </BaseCard>
