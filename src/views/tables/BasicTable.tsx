@@ -18,7 +18,16 @@ type Vendedor = {
 function App() {
 
 // const baseUrl = "https://localhost:7002/Vendedor"; // funciona en local se debe crear .env con REACT_APP_API_URL=http://localhost:7002/Vendedor 
-const baseUrl = import.meta.env.VITE_API_URL ?? "https://localhost:7002/Vendedor";
+// const baseUrl = import.meta.env.VITE_API_URL ?? "https://localhost:7002/Vendedor";
+let baseUrl = import.meta.env.VITE_API_URL_HTTPS; // valor por defecto
+
+if (window.location.hostname === "localhost") {
+  // Si el front corre en localhost, usa el backend local
+  baseUrl = import.meta.env.VITE_API_URL_HTTPS;
+} else {
+  // Si está en Netlify u otro dominio, usa la nube
+  baseUrl = import.meta.env.VITE_API_URL_NUBE;
+}
 console.log("URL que está usando el front:", baseUrl);
 const [data, setData] = useState<Vendedor[]>([]);
 const [modalInsertar, setModalInsertar] = useState(false);
