@@ -52,9 +52,11 @@ const FbDefaultForm = () => {
     });
   }, []);
 
+  /*
   interface FormData {
     vendedor: string;
   }
+    */
 
   interface VendedorOption {
     value: string;
