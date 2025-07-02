@@ -264,7 +264,7 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Vendedor"
-            value={vendedor}
+            value={formdata.vendedor}
             onChange={handleSelectChange}
             sx={{
               mb: 2,
