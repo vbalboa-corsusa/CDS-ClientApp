@@ -4,10 +4,12 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
+  /*
   Grid,
   RadioGroup,
   Radio,
   FormControl,
+  */
   MenuItem,
   Box,
 } from '@mui/material';
@@ -47,19 +49,29 @@ const FbDefaultForm = () => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
+  /*
   const [value, setValue] = React.useState('');
 
   const handleChange2 = (event: any) => {
     setValue(event.target.value);
   };
 
+  const [cliente] = React.useState('');
+  const [formaPago] = React.useState('');
+  const [moneda] = React.useState('');
+  const [vendedor] = React.useState('');
+  const [vendedor1] = React.useState('');
+  const [vendedor2] = React.useState('');
+  const [lider] = React.useState('');
+
   const [number, setNumber] = React.useState('');
 
   const handleChange3 = (event: any) => {
     setNumber(event.target.value);
   };
-
+  
   const [checked, setChecked] = React.useState(true);
+  */
 
   return (
     <div>
@@ -73,12 +85,12 @@ const FbDefaultForm = () => {
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
           <TextField
             fullWidth
-            id="standard-select-number"
+            id="standard-select-number-cliente"
             variant="outlined"
             select
             label="Cliente"
-            value={number}
-            onChange={handleChange3}
+            //value={cliente}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -91,7 +103,7 @@ const FbDefaultForm = () => {
           </TextField>
 
           <TextField
-            id="default-value"
+            id="cliente-final"
             label="Cliente Final"
             variant="outlined"
             defaultValue=""
@@ -102,7 +114,7 @@ const FbDefaultForm = () => {
           />
 
           <TextField
-            id="default-value"
+            id="cliente-proveedor"
             label="Cliente Proveedor"
             variant="outlined"
             defaultValue=""
@@ -116,7 +128,7 @@ const FbDefaultForm = () => {
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
 
             <TextField
-            id="default-value"
+            id="fecha-recepcion"
             label="Fecha de Recepción"
             variant="outlined"
             defaultValue=""
@@ -127,7 +139,7 @@ const FbDefaultForm = () => {
           />
 
           <TextField
-            id="default-value"
+            id="fecha-inicio"
             label="Fecha de Inicio"
             variant="outlined"
             defaultValue=""
@@ -138,7 +150,7 @@ const FbDefaultForm = () => {
           />
 
           <TextField
-            id="default-value"
+            id="fecha-procesamiento"
             label="Fecha de Procesamiento VI"
             variant="outlined"
             defaultValue=""
@@ -154,12 +166,12 @@ const FbDefaultForm = () => {
 
           <TextField
             fullWidth
-            id="standard-select-number"
+            id="standard-select-number-forma-pago"
             variant="outlined"
             select
             label="Forma de Pago"
-            value={number}
-            onChange={handleChange3}
+            //value={formaPago}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -173,12 +185,12 @@ const FbDefaultForm = () => {
 
           <TextField
             fullWidth
-            id="standard-select-number"
+            id="standard-select-number-moneda"
             variant="outlined"
             select
             label="Moneda"
-            value={number}
-            onChange={handleChange3}
+            //value={moneda}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -192,7 +204,7 @@ const FbDefaultForm = () => {
 
           
           <TextField
-            id="default-value"
+            id="total-sin-igv"
             label="Total sin IGV"
             variant="outlined"
             defaultValue=""
@@ -208,12 +220,12 @@ const FbDefaultForm = () => {
 
           <TextField
             fullWidth
-            id="standard-select-number"
+            id="standard-select-number-vendedor"
             variant="outlined"
             select
             label="Vendedor"
-            value={number}
-            onChange={handleChange3}
+            //value={vendedor}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -227,12 +239,12 @@ const FbDefaultForm = () => {
           
           <TextField
             fullWidth
-            id="standard-select-number"
+            id="standard-select-number-vendedor1"
             variant="outlined"
             select
             label="Vendedor 1"
-            value={number}
-            onChange={handleChange3}
+            //value={vendedor1}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -246,12 +258,12 @@ const FbDefaultForm = () => {
 
           <TextField
             fullWidth
-            id="standard-select-number"
+            id="standard-select-number-vendedor2"
             variant="outlined"
             select
             label="Vendedor 2"
-            value={number}
-            onChange={handleChange3}
+            //value={vendedor2}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -265,12 +277,12 @@ const FbDefaultForm = () => {
 
           <TextField
             fullWidth
-            id="standard-select-number"
+            id="standard-select-number-lider"
             variant="outlined"
             select
             label="Lider"
-            value={number}
-            onChange={handleChange3}
+            //value={lider}
+            //onChange={handleChange3}
             sx={{
               mb: 2,
             }}
@@ -287,7 +299,7 @@ const FbDefaultForm = () => {
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
 
           <TextField
-            id="default-value"
+            id="num-operacion"
             label="N° de Operación"
             variant="outlined"
             defaultValue=""
@@ -298,7 +310,7 @@ const FbDefaultForm = () => {
           />
 
             <TextField
-            id="default-value"
+            id="num-referencia-cliente"
             label="N° Referencia de Cliente"
             variant="outlined"
             defaultValue=""
@@ -309,7 +321,7 @@ const FbDefaultForm = () => {
           />          
 
           <TextField
-            id="default-value"
+            id="ubruta-cotizacion"
             label="Ubruta Cotización"
             variant="outlined"
             defaultValue=""
@@ -322,7 +334,7 @@ const FbDefaultForm = () => {
           <FormControlLabel
               control={
               <Checkbox
-                checked={checked}
+                //checked={checked}
                 onChange={handleChange}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
@@ -332,103 +344,6 @@ const FbDefaultForm = () => {
 
         </Box>
 
-          {/* <TextField
-            id="outlined-multiline-static"
-            label="Descripción"
-            multiline
-            rows={6}
-            variant="outlined"
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-          /> */}
-          
-          {/* <TextField
-            id="readonly-text"
-            label="Read Only"
-            defaultValue=""
-            slotProps={{
-              input: {
-                readOnly: true,
-              },
-            }}
-            variant="outlined"
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-          /> */}
-          
-          {/* <Grid
-            container
-            spacing={0}
-            sx={{
-              mb: 2,
-            }}
-          >
-            <Grid size={{ lg: 4, md: 6, sm: 12 }}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedA}
-                    onChange={handleChange}
-                    name="checkedA"
-                    color="primary"
-                  />
-                }
-                label="Check this custom checkbox"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedB}
-                    onChange={handleChange}
-                    name="checkedB"
-                    color="primary"
-                  />
-                }
-                label="Check this custom checkbox"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedC}
-                    onChange={handleChange}
-                    name="checkedC"
-                    color="primary"
-                  />
-                }
-                label="Check this custom checkbox"
-              />
-            </Grid>
-            <Grid size={{ lg: 4, md: 6, sm: 12 }}>
-              <FormControl component="fieldset">
-                <RadioGroup
-                  aria-label="gender"
-                  name="gender1"
-                  value={value}
-                  onChange={handleChange2}
-                >
-                  <FormControlLabel
-                    value="radio1"
-                    control={<Radio />}
-                    label="Toggle this custom radio"
-                  />
-                  <FormControlLabel
-                    value="radio2"
-                    control={<Radio />}
-                    label="Toggle this custom radio"
-                  />
-                  <FormControlLabel
-                    value="radio3"
-                    control={<Radio />}
-                    label="Toggle this custom radio"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
-          </Grid> */}
           <div>
           
           <Button
