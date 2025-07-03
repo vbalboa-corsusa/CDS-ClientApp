@@ -1,24 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   TextField,
   FormControlLabel,
   Checkbox,
   Button,
-  /*
-  Grid,
-  RadioGroup,
-  Radio,
-  FormControl,
-  */
   MenuItem,
   Box,
 } from '@mui/material';
 
-
+import { getVendedores } from '../../../services/api';
 import BaseCard from '../../../components/BaseCard/BaseCard';
+
+// Define FormData interface here if not imported
+export interface FormData {
+  cliente: string;
+  clienteFinal: string;
+  clienteProveedor: string;
+  fechaRecepcion: string;
+  fechaInicio: string;
+  fechaProcesamiento: string;
+  formaPago: string;
+  moneda: string;
+  totalSinIgv: string;
+  vendedor: string;
+  vendedor1: string;
+  vendedor2: string;
+  lider: string;
+  numOperacion: string;
+  numReferenciaCliente: string;
+  ubrutaCotizacion: string;
+  comisionCompartida: boolean;
+}
+
+export interface Vendedor {
+  idVendedor: string;
+  nombreVendedor: string;
+  // add other fields as needed
+}
+
+// Datos estáticos para otros campos
 const numbers = [
   {
-    value: 'Luis Suarez',
+    value: 'one',
     label: 'One',
   },
   {
@@ -36,82 +59,67 @@ const numbers = [
 ];
 
 const FbDefaultForm = () => {
+  // Estado para vendedores
+  const [vendedores, setVendedores] = React.useState<Vendedor[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  
+  // Estados para los campos del formulario
+  const [formData, setFormData] = React.useState<FormData>({
+    cliente: '',
+    clienteFinal: '',
+    clienteProveedor: '',
+    fechaRecepcion: '',
+    fechaInicio: '',
+    fechaProcesamiento: '',
+    formaPago: '',
+    moneda: '',
+    totalSinIgv: '',
+    vendedor: '',
+    vendedor1: '',
+    vendedor2: '',
+    lider: '',
+    numOperacion: '',
+    numReferenciaCliente: '',
+    ubrutaCotizacion: '',
+    comisionCompartida: false,
+  });
 
-  const [vendedor, setVendedor] = useState<any[]>([]);
-  const [formdata, setFormdata] = useState({ vendedor: '' });
-
-  useEffect(() => {
-    import('axios').then(({ default: axios }) => {
-      axios.get('http://localhost:7200/Vendedor')
-        .then((res) => {
-          setVendedor(res.data as any[]);
-        })
-        .catch((err) => {
-          console.error('Error al obtener vendedor:', err);
-        });
-    });
-  }, []);
-
-  /*
-  interface FormData {
-    vendedor: string;
-  }
-    */
-
-  interface VendedorOption {
-    value: string;
-    label: string;
-  }
-
-  interface CheckboxState {
-    checkedA: boolean;
-    checkedB: boolean;
-    checkedC: boolean;
-  }
-
-  const handleSelectChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormdata({
-      ...formdata,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const [state, setState] = React.useState<CheckboxState>({
+  const [state, setState] = React.useState({
     checkedA: false,
     checkedB: false,
     checkedC: false,
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Obtener vendedores al cargar el componente
+React.useEffect(() => {
+  getVendedores()
+    .then((res) => setVendedores(res.data as Vendedor[]))
+      .catch((err) => {
+        console.error('Error al obtener vendedores:', err);
+        setError('Error al cargar los vendedores. Por favor, intente nuevamente.');
+        setLoading(false);
+      });
+  }, []);
+
+  const handleChange = (event: any) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
-  /*
-  const [value, setValue] = React.useState<string>('');
-
-  const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+  const handleFormChange = (event: any) => {
+    const { name, value, type, checked } = event.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
   };
-  */
 
-  /*const [vendedor, setVendedor] = React.useState<string>('');*/
-
-  /*
-  const [formaPago] = React.useState<string>('');
-  const [moneda] = React.useState<string>('');
-  const [vendedor] = React.useState<string>('');
-  const [vendedor1] = React.useState<string>('');
-  const [vendedor2] = React.useState<string>('');
-  const [lider] = React.useState<string>('');
-
-  const [number, setNumber] = React.useState<string>('');
-
-  const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNumber(event.target.value);
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log('Datos del formulario:', formData);
+    // Aquí puedes agregar la lógica para enviar los datos a tu API
+    alert('Formulario enviado correctamente. Revisa la consola para ver los datos.');
   };
-  
-  const [checked, setChecked] = React.useState<boolean>(true);
-  */
 
   return (
     <div>
@@ -121,7 +129,7 @@ const FbDefaultForm = () => {
 
         <BaseCard title="REGISTRO DE PEDIDOS">
         
-        <form>
+        <form onSubmit={handleSubmit}>
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
           <TextField
             fullWidth
@@ -129,13 +137,14 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Cliente"
-            //value={cliente}
-            //onChange={handleChange3}
+            name="cliente"
+            value={formData.cliente}
+            onChange={handleFormChange}
             sx={{
               mb: 2,
             }}
           >
-            {numbers.map((option: VendedorOption) => (
+            {numbers.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -146,7 +155,9 @@ const FbDefaultForm = () => {
             id="cliente-final"
             label="Cliente Final"
             variant="outlined"
-            defaultValue=""
+            name="clienteFinal"
+            value={formData.clienteFinal}
+            onChange={handleFormChange}
             fullWidth
             sx={{
               mb: 2,
@@ -157,7 +168,9 @@ const FbDefaultForm = () => {
             id="cliente-proveedor"
             label="Cliente Proveedor"
             variant="outlined"
-            defaultValue=""
+            name="clienteProveedor"
+            value={formData.clienteProveedor}
+            onChange={handleFormChange}
             fullWidth
             sx={{
               mb: 2,
@@ -171,7 +184,9 @@ const FbDefaultForm = () => {
             id="fecha-recepcion"
             label="Fecha de Recepción"
             variant="outlined"
-            defaultValue=""
+            name="fechaRecepcion"
+            value={formData.fechaRecepcion}
+            onChange={handleFormChange}
             fullWidth
             sx={{
               mb: 2,
@@ -182,7 +197,9 @@ const FbDefaultForm = () => {
             id="fecha-inicio"
             label="Fecha de Inicio"
             variant="outlined"
-            defaultValue=""
+            name="fechaInicio"
+            value={formData.fechaInicio}
+            onChange={handleFormChange}
             fullWidth
             sx={{
               mb: 2,
@@ -193,7 +210,9 @@ const FbDefaultForm = () => {
             id="fecha-procesamiento"
             label="Fecha de Procesamiento VI"
             variant="outlined"
-            defaultValue=""
+            name="fechaProcesamiento"
+            value={formData.fechaProcesamiento}
+            onChange={handleFormChange}
             fullWidth
             sx={{
               mb: 2,
@@ -210,13 +229,14 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Forma de Pago"
-            //value={formaPago}
-            //onChange={handleChange3}
+            name="formaPago"
+            value={formData.formaPago}
+            onChange={handleFormChange}
             sx={{
               mb: 2,
             }}
           >
-            {numbers.map((option: VendedorOption) => (
+            {numbers.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -229,13 +249,14 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Moneda"
-            //value={moneda}
-            //onChange={handleChange3}
+            name="moneda"
+            value={formData.moneda}
+            onChange={handleFormChange}
             sx={{
               mb: 2,
             }}
           >
-            {numbers.map((option: VendedorOption) => (
+            {numbers.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -247,7 +268,9 @@ const FbDefaultForm = () => {
             id="total-sin-igv"
             label="Total sin IGV"
             variant="outlined"
-            defaultValue=""
+            name="totalSinIgv"
+            value={formData.totalSinIgv}
+            onChange={handleFormChange}
             fullWidth
             sx={{
               mb: 2,
@@ -264,17 +287,27 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Vendedor"
-            value={formdata.vendedor}
-            onChange={handleSelectChange}
+            name="vendedor"
+            value={formData.vendedor}
+            onChange={handleFormChange}
+            disabled={loading}
+            helperText={error ? error : ''}
+            error={!!error}
             sx={{
               mb: 2,
             }}
           >
-            {vendedor.map((option: VendedorOption) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+            {loading ? (
+              <MenuItem disabled>Cargando vendedores...</MenuItem>
+            ) : vendedores.length === 0 ? (
+              <MenuItem disabled>No hay vendedores disponibles</MenuItem>
+            ) : (
+              vendedores.map((vendedor) => (
+                <MenuItem key={vendedor.idVendedor} value={vendedor.idVendedor}>
+                  {vendedor.nombreVendedor}
+                </MenuItem>
+              ))
+            )}
           </TextField>
           
           <TextField
@@ -283,17 +316,25 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Vendedor 1"
-            //value={vendedor1}
-            //onChange={handleChange3}
+            name="vendedor1"
+            value={formData.vendedor1}
+            onChange={handleFormChange}
+            disabled={loading}
             sx={{
               mb: 2,
             }}
           >
-            {numbers.map((option: VendedorOption) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+            {loading ? (
+              <MenuItem disabled>Cargando vendedores...</MenuItem>
+            ) : vendedores.length === 0 ? (
+              <MenuItem disabled>No hay vendedores disponibles</MenuItem>
+            ) : (
+              vendedores.map((vendedor) => (
+                <MenuItem key={vendedor.idVendedor} value={vendedor.idVendedor}>
+                  {vendedor.nombreVendedor}
+                </MenuItem>
+              ))
+            )}
           </TextField>
 
           <TextField
@@ -302,17 +343,25 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Vendedor 2"
-            //value={vendedor2}
-            //onChange={handleChange3}
+            name="vendedor2"
+            value={formData.vendedor2}
+            onChange={handleFormChange}
+            disabled={loading}
             sx={{
               mb: 2,
             }}
           >
-            {numbers.map((option: VendedorOption) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+            {loading ? (
+              <MenuItem disabled>Cargando vendedores...</MenuItem>
+            ) : vendedores.length === 0 ? (
+              <MenuItem disabled>No hay vendedores disponibles</MenuItem>
+            ) : (
+              vendedores.map((vendedor) => (
+                <MenuItem key={vendedor.idVendedor} value={vendedor.idVendedor}>
+                  {vendedor.nombreVendedor}
+                </MenuItem>
+              ))
+            )}
           </TextField>
 
           <TextField
@@ -321,17 +370,25 @@ const FbDefaultForm = () => {
             variant="outlined"
             select
             label="Lider"
-            //value={lider}
-            //onChange={handleChange3}
+            name="lider"
+            value={formData.lider}
+            onChange={handleFormChange}
+            disabled={loading}
             sx={{
               mb: 2,
             }}
           >
-            {numbers.map((option: VendedorOption) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+            {loading ? (
+              <MenuItem disabled>Cargando vendedores...</MenuItem>
+            ) : vendedores.length === 0 ? (
+              <MenuItem disabled>No hay lideres disponibles</MenuItem>
+            ) : (
+              vendedores.map((vendedor) => (
+                <MenuItem key={vendedor.idVendedor} value={vendedor.idVendedor}>
+                  {vendedor.nombreVendedor}
+                </MenuItem>
+              ))
+            )}
           </TextField>                    
 
         </Box>
@@ -342,7 +399,9 @@ const FbDefaultForm = () => {
             id="num-operacion"
             label="N° de Operación"
             variant="outlined"
-            defaultValue=""
+            name="numOperacion"
+            value={formData.numOperacion}
+            onChange={handleFormChange}
             fullWidth
             sx={{
               mb: 2,
@@ -353,7 +412,9 @@ const FbDefaultForm = () => {
             id="num-referencia-cliente"
             label="N° Referencia de Cliente"
             variant="outlined"
-            defaultValue=""
+            name="numReferenciaCliente"
+            value={formData.numReferenciaCliente}
+            onChange={handleFormChange}
             fullWidth
             sx={{
               mb: 2,
@@ -364,7 +425,9 @@ const FbDefaultForm = () => {
             id="ubruta-cotizacion"
             label="Ubruta Cotización"
             variant="outlined"
-            defaultValue=""
+            name="ubrutaCotizacion"
+            value={formData.ubrutaCotizacion}
+            onChange={handleFormChange}
             fullWidth
             sx={{
               mb: 2,
@@ -374,8 +437,9 @@ const FbDefaultForm = () => {
           <FormControlLabel
               control={
               <Checkbox
-                //checked={checked}
-                onChange={handleChange}
+                checked={formData.comisionCompartida}
+                onChange={handleFormChange}
+                name="comisionCompartida"
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
               }
@@ -384,6 +448,103 @@ const FbDefaultForm = () => {
 
         </Box>
 
+          {/* <TextField
+            id="outlined-multiline-static"
+            label="Descripción"
+            multiline
+            rows={6}
+            variant="outlined"
+            fullWidth
+            sx={{
+              mb: 2,
+            }}
+          /> */}
+          
+          {/* <TextField
+            id="readonly-text"
+            label="Read Only"
+            defaultValue=""
+            slotProps={{
+              input: {
+                readOnly: true,
+              },
+            }}
+            variant="outlined"
+            fullWidth
+            sx={{
+              mb: 2,
+            }}
+          /> */}
+          
+          {/* <Grid
+            container
+            spacing={0}
+            sx={{
+              mb: 2,
+            }}
+          >
+            <Grid size={{ lg: 4, md: 6, sm: 12 }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={state.checkedA}
+                    onChange={handleChange}
+                    name="checkedA"
+                    color="primary"
+                  />
+                }
+                label="Check this custom checkbox"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={state.checkedB}
+                    onChange={handleChange}
+                    name="checkedB"
+                    color="primary"
+                  />
+                }
+                label="Check this custom checkbox"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={state.checkedC}
+                    onChange={handleChange}
+                    name="checkedC"
+                    color="primary"
+                  />
+                }
+                label="Check this custom checkbox"
+              />
+            </Grid>
+            <Grid size={{ lg: 4, md: 6, sm: 12 }}>
+              <FormControl component="fieldset">
+                <RadioGroup
+                  aria-label="gender"
+                  name="gender1"
+                  value={value}
+                  onChange={handleChange2}
+                >
+                  <FormControlLabel
+                    value="radio1"
+                    control={<Radio />}
+                    label="Toggle this custom radio"
+                  />
+                  <FormControlLabel
+                    value="radio2"
+                    control={<Radio />}
+                    label="Toggle this custom radio"
+                  />
+                  <FormControlLabel
+                    value="radio3"
+                    control={<Radio />}
+                    label="Toggle this custom radio"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+          </Grid> */}
           <div>
           
           <Button
@@ -402,4 +563,3 @@ const FbDefaultForm = () => {
 };
 
 export default FbDefaultForm;
-
