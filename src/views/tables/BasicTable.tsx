@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { useState, useEffect } from 'react';
+import { getVendedores } from '../../services/api';
 
 
 type Vendedor = {
@@ -57,11 +58,10 @@ const abrirCerrarModalEditar = () => {
   setModalEditar(!modalEditar);
 };
 
-const peticionGet=async()=>{
-  await axios.get(baseUrl)
+const peticionGet = async () => {
+  await getVendedores()
     .then(response => {
-      console.log("Datos obtenidos:", response.data);
-      setData(response.data as Vendedor[]); // Asignar los datos obtenidos a la variable de estado
+      setData(response.data as Vendedor[]);
     }).catch(error => {
       console.error("Error al obtener los datos:", error);
     })
