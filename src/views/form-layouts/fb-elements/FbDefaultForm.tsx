@@ -10,6 +10,8 @@ import {
 
 import { getVendedores } from '../../../services/api';
 import { getClientes } from '../../../services/api';
+import { getFormaPago } from '../../../services/api';
+import { getMonedas } from '../../../services/api';
 import BaseCard from '../../../components/BaseCard/BaseCard';
 
 // Define FormData interface here if not imported
@@ -45,6 +47,18 @@ export interface Clientes {
   RazonSocial: string;
 }
 
+// Define FormaPago interface if not imported
+export interface FormaPago {
+  idFp: string;
+  DescripcionFp: string;
+}
+
+// Define Monedas interface if not imported
+export interface Monedas {
+  idMda: string;
+  Nombre: string;
+}
+
 // Datos estáticos para otros campos
 const numbers = [
   {
@@ -70,7 +84,10 @@ const FbDefaultForm = () => {
   const [vendedores, setVendedores] = React.useState<Vendedor[]>([]);
   // Estado para clientes
   const [clientes, setClientes] = React.useState<Clientes[]>([]);
-
+  // Estado para forma de pago
+  const [formaPago, setFormaPago] = React.useState<FormaPago[]>([]);
+  // Estado para monedas
+  const [monedas, setMonedas] = React.useState<Monedas[]>([]);
 
   // Estado para manejar la carga y errores
   const [loading, setLoading] = React.useState(false);
@@ -116,6 +133,28 @@ React.useEffect(() => {
         console.error('Error al obtener clientes:', err);
         setError('Error al cargar los clientes. Por favor, intente nuevamente.');
         setLoading(false);
+      });
+  }, []);
+
+  // Obtener forma de pago al cargar el componente
+  React.useEffect(() => {
+    getFormaPago()
+      .then((res) => setFormaPago(res.data as FormaPago[]))
+      .catch((err) => {
+      console.error('Error al obtener forma de pago:', err);
+      setError('Error al cargar las formas de pago. Por favor, intente nuevamente.');
+      setLoading(false);
+      });
+  }, []);
+
+  // Obtener monedas al cargar el componente
+    React.useEffect(() => {
+    getMonedas()
+      .then((res) => setMonedas(res.data as Monedas[]))
+      .catch((err) => {
+      console.error('Error al obtener monedas:', err);
+      setError('Error al cargar las monedas. Por favor, intente nuevamente.');
+      setLoading(false);
       });
   }, []);
 
@@ -259,11 +298,17 @@ React.useEffect(() => {
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+            {loading ? (
+              <MenuItem disabled>Cargando formas de pago...</MenuItem>
+            ) : formaPago.length === 0 ? (
+              <MenuItem disabled>No hay formas de pago disponibles</MenuItem>
+            ) : (
+              formaPago.map((fp) => (
+                <MenuItem key={fp.idFp} value={fp.idFp}>
+                  {fp.DescripcionFp}
+                </MenuItem>
+              ))
+            )}
           </TextField>
 
           <TextField
@@ -279,11 +324,17 @@ React.useEffect(() => {
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+            {loading ? (
+              <MenuItem disabled>Cargando formas de monedas...</MenuItem>
+            ) : monedas.length === 0 ? (
+              <MenuItem disabled>No hay formas de monedas</MenuItem>
+            ) : (
+              monedas.map((moneda) => (
+                <MenuItem key={moneda.idMda} value={moneda.idMda}>
+                  {moneda.Nombre}
+                </MenuItem>
+              ))
+            )}
           </TextField>
 
           
