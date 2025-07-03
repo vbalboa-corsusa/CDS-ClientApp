@@ -154,11 +154,9 @@ React.useEffect(() => {
             name="cliente"
             value={formData.cliente}
             onChange={handleFormChange}
-            /*
             disabled={loading}
             helperText={error ? error : ''}
             error={!!error}
-            */
             sx={{
               mb: 2,
             }}
