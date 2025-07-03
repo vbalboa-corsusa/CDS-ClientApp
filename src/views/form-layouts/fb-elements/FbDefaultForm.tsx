@@ -85,12 +85,6 @@ const FbDefaultForm = () => {
     comisionCompartida: false,
   });
 
-  const [state, setState] = React.useState({
-    checkedA: false,
-    checkedB: false,
-    checkedC: false,
-  });
-
   // Obtener vendedores al cargar el componente
 React.useEffect(() => {
   getVendedores()
@@ -101,10 +95,6 @@ React.useEffect(() => {
         setLoading(false);
       });
   }, []);
-
-  const handleChange = (event: any) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
 
   const handleFormChange = (event: any) => {
     const { name, value, type, checked } = event.target;
