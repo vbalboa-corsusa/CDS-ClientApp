@@ -1,301 +1,256 @@
 import React from 'react';
-import { Grid, Box, Checkbox, FormGroup, FormControlLabel, FormControl } from '@mui/material';
+// import '.src/App.css';
+import 'src/App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import axios from 'axios';
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { useState, useEffect } from 'react';
+import { getVendedores } from '../../services/api';
 
-import BaseCard from '../../components/BaseCard/BaseCard';
 
-import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
-import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-
-const ExCheckbox = () => {
-  // 2
-  const [checked, setChecked] = React.useState(true);
-
-  const handleChange = (event: any) => {
-    setChecked(event.target.checked);
-  };
-  return (
-    <Box>
-      <Grid container spacing={3}>
-        {/* ------------------------- row 1 ------------------------- */}
-        <Grid
-          size={{ xs: 12, lg: 4, sm: 6 }}
-          sx={{
-            display: 'flex',
-            alignItems: 'stretch',
-          }}
-        >
-          <BaseCard title="Default Checkbox">
-            <Box
-              sx={{
-                textAlign: 'center',
-              }}
-            >
-              <Checkbox
-                checked={checked}
-                onChange={handleChange}
-                inputProps={{ 'aria-label': 'primary checkbox' }}
-              />
-
-              <Checkbox
-                disabled
-                checked
-                inputProps={{ 'aria-label': 'disabled checked checkbox' }}
-              />
-              <Checkbox
-                defaultChecked
-                indeterminate
-                inputProps={{ 'aria-label': 'indeterminate checkbox' }}
-              />
-              <Checkbox
-                defaultChecked
-                color="default"
-                inputProps={{ 'aria-label': 'checkbox with default color' }}
-              />
-            </Box>
-          </BaseCard>
-        </Grid>
-        {/* ------------------------- row 1 ------------------------- */}
-        <Grid
-          size={{ xs: 12, lg: 4, sm: 6 }}
-          sx={{
-            display: 'flex',
-            alignItems: 'stretch',
-          }}
-        >
-          <BaseCard title="Default with Colors">
-            <Box
-              sx={{
-                textAlign: 'center',
-              }}
-            >
-              <Checkbox
-                defaultChecked
-                color="primary"
-                inputProps={{ 'aria-label': 'checkbox with default color' }}
-              />
-              <Checkbox
-                defaultChecked
-                color="secondary"
-                inputProps={{ 'aria-label': 'checkbox with default color' }}
-              />
-              <Checkbox
-                defaultChecked
-                sx={{
-                  color: 'success.main',
-                  '&.Mui-checked': {
-                    color: 'success.main',
-                  },
-                }}
-              />
-              <Checkbox
-                defaultChecked
-                sx={{
-                  color: 'error.main',
-                  '&.Mui-checked': {
-                    color: 'error.main',
-                  },
-                }}
-              />
-              <Checkbox
-                defaultChecked
-                sx={{
-                  color: 'warning.main',
-                  '&.Mui-checked': {
-                    color: 'warning.main',
-                  },
-                }}
-              />
-            </Box>
-          </BaseCard>
-        </Grid>
-        {/* ------------------------- row 1 ------------------------- */}
-        <Grid
-          size={{ xs: 12, lg: 4, sm: 6 }}
-          sx={{
-            display: 'flex',
-            alignItems: 'stretch',
-          }}
-        >
-          <BaseCard title="Sizes & Custom icon">
-            <Box>
-              <FormGroup
-                row
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      icon={<CheckBoxOutlineBlankOutlinedIcon />}
-                      checkedIcon={<CheckBoxOutlinedIcon />}
-                      name="checkednormal"
-                    />
-                  }
-                  label="Normal Size"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      icon={<CheckBoxOutlineBlankOutlinedIcon fontSize="small" />}
-                      checkedIcon={<CheckBoxOutlinedIcon fontSize="small" />}
-                      name="checkedsmall"
-                    />
-                  }
-                  label="Small size"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      icon={<FavoriteOutlinedIcon />}
-                      checkedIcon={<FavoriteBorderOutlinedIcon />}
-                      name="checkedH"
-                    />
-                  }
-                  label="Heart"
-                />
-              </FormGroup>
-            </Box>
-          </BaseCard>
-        </Grid>
-
-        {/* ------------------------- row 1 ------------------------- */}
-        <Grid
-          size={{ xs: 12, lg: 6, sm: 6 }}
-          sx={{
-            display: 'flex',
-            alignItems: 'stretch',
-          }}
-        >
-          <BaseCard title="Placement">
-            <FormControl
-              component="fieldset"
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <FormGroup
-                aria-label="position"
-                row
-                sx={{
-                  justifyContent: 'center',
-                }}
-              >
-                <FormControlLabel
-                  value="top"
-                  control={<Checkbox color="primary" />}
-                  label="Top"
-                  labelPlacement="top"
-                />
-                <FormControlLabel
-                  value="start"
-                  control={<Checkbox color="primary" />}
-                  label="Start"
-                  labelPlacement="start"
-                />
-                <FormControlLabel
-                  value="bottom"
-                  control={<Checkbox color="primary" />}
-                  label="Bottom"
-                  labelPlacement="bottom"
-                />
-                <FormControlLabel
-                  value="end"
-                  control={<Checkbox color="primary" />}
-                  label="End"
-                  labelPlacement="end"
-                />
-              </FormGroup>
-            </FormControl>
-          </BaseCard>
-        </Grid>
-
-        {/* ------------------------- row 1 ------------------------- */}
-        <Grid
-          size={{ xs: 12, lg: 6, sm: 6 }}
-          sx={{
-            display: 'flex',
-            alignItems: 'stretch',
-          }}
-        >
-          <BaseCard title="Color with Label">
-            <Box
-              sx={{
-                textAlign: 'center',
-              }}
-            >
-              <FormControlLabel
-                value="end"
-                control={<Checkbox color="primary" defaultChecked />}
-                label="Primary"
-                labelPlacement="end"
-              />
-              <FormControlLabel
-                value="end"
-                control={<Checkbox color="secondary" defaultChecked />}
-                label="Secondary"
-                labelPlacement="end"
-              />
-              <FormControlLabel
-                value="end"
-                control={
-                  <Checkbox
-                    defaultChecked
-                    sx={{
-                      color: 'success.main',
-                      '&.Mui-checked': {
-                        color: 'success.main',
-                      },
-                    }}
-                  />
-                }
-                label="Success"
-                labelPlacement="end"
-              />
-
-              <FormControlLabel
-                value="end"
-                control={
-                  <Checkbox
-                    defaultChecked
-                    sx={{
-                      color: 'error.main',
-                      '&.Mui-checked': {
-                        color: 'error.main',
-                      },
-                    }}
-                  />
-                }
-                label="Danger"
-                labelPlacement="end"
-              />
-
-              <FormControlLabel
-                value="end"
-                control={
-                  <Checkbox
-                    defaultChecked
-                    sx={{
-                      color: 'warning.main',
-                      '&.Mui-checked': {
-                        color: 'warning.main',
-                      },
-                    }}
-                  />
-                }
-                label="Warning"
-                labelPlacement="end"
-              />
-            </Box>
-          </BaseCard>
-        </Grid>
-      </Grid>
-    </Box>
-  );
+type Vendedor = {
+  idVendedor?: number | string;
+  numDocVendedor: string;
+  nombreVendedor: string;
+  Estado?: boolean | number;
 };
 
-export default ExCheckbox;
+function App() {
+
+// const baseUrl = "https://localhost:7002/Vendedor"; // funciona en local se debe crear .env con REACT_APP_API_URL=http://localhost:7002/Vendedor 
+// const baseUrl = import.meta.env.VITE_API_URL ?? "https://localhost:7002/Vendedor";
+let baseUrl = import.meta.env.VITE_API_URL_HTTPS; // valor por defecto
+
+if (window.location.hostname === "localhost") {
+  // Si el front corre en localhost, usa el backend local
+  baseUrl = import.meta.env.VITE_API_URL_HTTPS;
+} else {
+  // Si está en Netlify u otro dominio, usa la nube
+  baseUrl = import.meta.env.VITE_API_URL_NUBE;
+}
+console.log("URL que está usando el front:", baseUrl);
+const [data, setData] = useState<Vendedor[]>([]);
+const [modalInsertar, setModalInsertar] = useState(false);
+const [modalEditar, setModalEditar] = useState(false); 
+const [gestorSeleccion, setGestorSeleccion] = useState<Vendedor>({
+    idVendedor: '',
+    numDocVendedor: '',
+    nombreVendedor: ''
+});
+
+interface HandleChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
+
+const handleChange = (e: HandleChangeEvent): void => {
+  const { name, value } = e.target;
+  setGestorSeleccion({
+    ...gestorSeleccion,
+    [name]: value
+  });
+  console.log(gestorSeleccion);
+}
+
+const abrirCerrarModalInsertar = () => {
+  setModalInsertar(!modalInsertar);
+};
+
+const abrirCerrarModalEditar = () => {
+  setModalEditar(!modalEditar);
+};
+
+const peticionGet = async () => {
+  await getVendedores()
+    .then(response => {
+      setData(response.data as Vendedor[]);
+    }).catch(error => {
+      console.error("Error al obtener los datos:", error);
+    })
+};
+
+const peticionPost = async () => {
+  delete gestorSeleccion.idVendedor; // Asegurarse de que no se envíe el ID_Vendedor al crear un nuevo registro
+  //gestorSeleccion.numDocVendedor = String(gestorSeleccion.numDocVendedor); // Asegurarse de que sea un número
+  await axios.post(baseUrl, gestorSeleccion)
+    .then(response => {
+      setData(data.concat(response.data as Vendedor)); // Agregar el nuevo registro a la lista
+      abrirCerrarModalInsertar(); // Cerrar el modal después de insertar
+    }).catch(error => {
+      console.error("Error al insertar el registro:", error);
+    })
+};
+
+const peticionPut = async () => {
+  gestorSeleccion.idVendedor = gestorSeleccion.idVendedor !== undefined ? parseInt(String(gestorSeleccion.idVendedor)) : undefined; // Asegurarse de que sea un número
+  await axios.put(baseUrl+"/"+gestorSeleccion.idVendedor, gestorSeleccion)
+  .then(response => {
+    var respuesta = response.data as Vendedor;
+    var dataAuxiliar = data;
+    dataAuxiliar.map(vendedor => {
+      if(vendedor.idVendedor === gestorSeleccion.idVendedor){
+        vendedor.numDocVendedor = respuesta.numDocVendedor;
+        vendedor.nombreVendedor = respuesta.nombreVendedor;
+      }
+    })
+    abrirCerrarModalEditar(); // Cerrar el modal después de editar
+  }).catch(error => {
+    console.error("Error al editar el registro:", error);
+  })
+}
+
+/*interface SeleccionarGestorProps {
+  vendedor: Vendedor;
+  caso: string;
+}*/
+
+const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
+  setGestorSeleccion(vendedor);
+  (caso === "Editar") &&
+    abrirCerrarModalEditar();
+};
+
+  useEffect(() => {
+    peticionGet();
+  }, []);
+
+  
+  return (
+    <>
+      <div>
+        <h1 style={{
+          textAlign: 'center',
+          color: 'white',
+          fontSize: '30px',
+          margin: '20px 0',
+          padding: '10px',
+          backgroundColor: 'rgb(0, 47, 255)',
+          borderRadius: '50px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+        }}>Buscar Registro / ORDEN PEDIDO</h1>
+        <input 
+        style={{
+          backgroundColor: 'rgba(127, 227, 245, 0.5)',
+          color: 'darkblue',
+          width: '100%',
+          padding: '15px',
+          borderRadius: '10px',
+          border: '3px solid darkblue',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          fontSize: '16px',
+          marginBottom: '15px'
+        }}
+        placeholder="Buscar por Cliente, Nombre Vendedor..."
+        ></input> 
+      </div>
+
+      <div className="App"
+      style={{ overflowX: 'auto', marginLeft: '0px' }}>             
+        <br />
+        <table className="table table-striped table-bordered"
+          style={{
+          width: "200%",
+          fontSize: "14px",
+          tableLayout: "auto",
+          
+          /*marginLeft: "0"*/
+        }}
+        >
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Cliente Final</th>
+              <th>Cliente Proveedor</th>
+              <th>Fecha Recepcion</th>
+              <th>Fecha Inicio</th>
+              <th>Fecha Procesamiento VI</th>
+              <th>Forma de Pago</th>
+              <th>Moneda</th>
+              <th>Total sin IGV</th>              
+              {/* <th>N° Documento</th> */}
+              <th>Vendedor</th>
+              <th>Activo</th>
+              <th>Acciones</th>            
+            </tr>
+          </thead>
+          <tbody>
+            {Array.isArray(data) && data.map(vendedor => (
+              <tr key={vendedor?.idVendedor ?? `${vendedor.numDocVendedor}-${Math.random()}`}>
+               <td>{vendedor.idVendedor}</td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               {/* <td>{vendedor.numDocVendedor}</td> */}
+               <td>{vendedor.nombreVendedor}</td>
+               <td>{vendedor.Estado ? "0" : "1"}</td>
+               <td>
+                  <button className="btn btn-primary" onClick={()=>seleccionarGestor(vendedor, "Editar")}>Editar</button> {" "}
+                  <button className="btn btn-danger">Eliminar</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>  
+        </table>
+
+        {/* Modal para insertar un nuevo gestor de base de datos */}
+        <Modal isOpen={modalInsertar}>
+          <ModalHeader>Insertar Gestor de Base de Datos</ModalHeader>
+          <ModalBody>
+            <div className="form-group">
+              {/* <label>ID: </label>
+              <br />
+              <input type="text" className="form-control" name='idVendedor' onChange={handleChange}/>
+              <br /> */}
+              <label>Cliente</label>
+              <label>N° Documento: </label>
+              <br />
+              <input type="text" className="form-control" name='numDocVendedor' onChange={handleChange}/>
+              <br />
+              <label>Nombre Vendedor: </label>
+              <br />
+              <input type="text" className="form-control" name='nombreVendedor' onChange={handleChange}/>
+              <br />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <button className="btn btn-primary" onClick={()=>peticionPost()}>Insertar</button>
+            <button className="btn btn-danger" onClick={()=>abrirCerrarModalInsertar()}>Cancelar</button>
+          </ModalFooter>
+        </Modal>
+
+        {/* Modal para editar un gestor de base de datos */}
+        <Modal isOpen={modalEditar}>
+            <ModalHeader>Editar Gestor de Base de Datos</ModalHeader>
+            <ModalBody>
+              <div className='form-group'>
+                <label>ID: </label>
+                <br />
+                <input type="text" className='form-control' name='idVendedor' readOnly value={gestorSeleccion && gestorSeleccion.idVendedor}/>
+                <br />
+                <label>N° Documento: </label>
+                <br />
+                <input type="text" className='form-control' name="numDocVendedor" onChange={handleChange} value={gestorSeleccion && gestorSeleccion.numDocVendedor}/>
+                <br />
+                <label>Nombre Vendedor: </label>
+                <br />
+                <input type="text" className='form-control' name='nombreVendedor' onChange={handleChange} value={gestorSeleccion && gestorSeleccion.nombreVendedor}/>
+                <br />
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <button className='btn btn-primary' onClick={()=>peticionPut()}>Editar</button>{" "}
+              <button className='btn btn-danger' onClick={()=>abrirCerrarModalEditar()}>Cancelar</button>
+            </ModalFooter>
+        </Modal>
+
+      </div>
+    </>
+  );
+}
+
+export default App;
