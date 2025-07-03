@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 
 import { getVendedores } from '../../../services/api';
+import { getClientes } from '../../../services/api';
 import BaseCard from '../../../components/BaseCard/BaseCard';
 
 // Define FormData interface here if not imported
@@ -32,10 +33,16 @@ export interface FormData {
   comisionCompartida: boolean;
 }
 
+// Define Clientes interface if not imported
 export interface Vendedor {
   idVendedor: string;
   nombreVendedor: string;
-  // add other fields as needed
+}
+
+// Define Clientes interface if not imported
+export interface Clientes {
+  idCliente: string;
+  RazonSocial: string;
 }
 
 // Datos estáticos para otros campos
@@ -61,6 +68,11 @@ const numbers = [
 const FbDefaultForm = () => {
   // Estado para vendedores
   const [vendedores, setVendedores] = React.useState<Vendedor[]>([]);
+  // Estado para clientes
+  const [clientes, setClientes] = React.useState<Clientes[]>([]);
+
+
+  // Estado para manejar la carga y errores
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   
@@ -96,6 +108,17 @@ React.useEffect(() => {
       });
   }, []);
 
+  // Obtener clientes al cargar el componente
+  React.useEffect(() => {
+    getClientes()
+      .then((res) => setClientes(res.data as Clientes[]))
+      .catch((err) => {
+        console.error('Error al obtener clientes:', err);
+        setError('Error al cargar los clientes. Por favor, intente nuevamente.');
+        setLoading(false);
+      });
+  }, []);
+
   const handleFormChange = (event: any) => {
     const { name, value, type, checked } = event.target;
     setFormData({
@@ -121,6 +144,7 @@ React.useEffect(() => {
         
         <form onSubmit={handleSubmit}>
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
+
           <TextField
             fullWidth
             id="standard-select-number-cliente"
@@ -130,15 +154,26 @@ React.useEffect(() => {
             name="cliente"
             value={formData.cliente}
             onChange={handleFormChange}
+            /*
+            disabled={loading}
+            helperText={error ? error : ''}
+            error={!!error}
+            */
             sx={{
               mb: 2,
             }}
           >
-            {numbers.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+            {loading ? (
+              <MenuItem disabled>Cargando clientes...</MenuItem>
+            ) : clientes.length === 0 ? (
+              <MenuItem disabled>No hay clientes disponibles</MenuItem>
+            ) : (
+              clientes.map((cliente) => (
+                <MenuItem key={cliente.idCliente} value={cliente.idCliente}>
+                  {cliente.RazonSocial}
+                </MenuItem>
+              ))
+            )}
           </TextField>
 
           <TextField
@@ -280,9 +315,11 @@ React.useEffect(() => {
             name="vendedor"
             value={formData.vendedor}
             onChange={handleFormChange}
+            /*
             disabled={loading}
             helperText={error ? error : ''}
             error={!!error}
+            */
             sx={{
               mb: 2,
             }}

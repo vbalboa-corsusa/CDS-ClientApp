@@ -17,9 +17,9 @@ const api = axios.create({
 });
 
 // ---- Funciones para endpoints ---- //
-export const getVendedores = () => api.get('/Vendedor');
+export const getVendedores = () => api.get('/Vendedor'); //1
+export const getClientes = () => api.get('/Cliente'); //2
 export const getProductos = () => api.get('/Producto');
-export const getClientes = () => api.get('/Cliente');
 export const getPedidos = () => api.get('/Pedido');
 export const postPedido = (data: any) => api.post('/Pedido', data);
 // Agrega aquí más endpoints según necesites

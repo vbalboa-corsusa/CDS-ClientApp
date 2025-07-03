@@ -46,7 +46,7 @@ const Menuitems: MenuitemsType[] = [
         id: uniqueId(),
         title: 'Buscar registro',
         icon: 'stop-circle-line-duotone',
-        href: '/form-layouts/fb-elements/FbDefaultSearch',
+        href: '/form-elements/checkbox',
       },
     ],
   },
@@ -75,13 +75,7 @@ const Menuitems: MenuitemsType[] = [
     title: 'Buttons',
     icon: "menu-dots-circle-line-duotone",
     href: '/form-elements/button',
-  },
-  {
-    id: uniqueId(),
-    title: 'Checkbox',
-    icon: "check-square-linear",
-    href: '/form-elements/checkbox',
-  },
+  },  
   {
     id: uniqueId(),
     title: 'Radio',
