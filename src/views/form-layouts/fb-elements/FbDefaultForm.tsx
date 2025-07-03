@@ -74,7 +74,7 @@ const FbDefaultForm = () => {
 
   // Estado para manejar la carga y errores
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [/*error,*/ setError] = React.useState<string | null>(null);
   
   // Estados para los campos del formulario
   const [formData, setFormData] = React.useState<FormData>({
