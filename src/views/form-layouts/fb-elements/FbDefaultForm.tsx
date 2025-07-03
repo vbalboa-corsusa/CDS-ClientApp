@@ -13,6 +13,7 @@ import { getClientes } from '../../../services/api';
 import { getFormaPago } from '../../../services/api';
 import { getMonedas } from '../../../services/api';
 import BaseCard from '../../../components/BaseCard/BaseCard';
+import api from '../../../services/api';
 
 // Define FormData interface here if not imported
 export interface FormData {
@@ -80,6 +81,9 @@ const numbers = [
   },
 ];
 */
+
+// Mostrar la URL base que está usando el front
+console.log('URL que está usando el front:', api.defaults.baseURL);
 
 const FbDefaultForm = () => {
   // Estado para vendedores
