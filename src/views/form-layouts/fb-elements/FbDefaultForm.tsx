@@ -60,6 +60,7 @@ export interface Monedas {
 }
 
 // Datos estáticos para otros campos
+/*
 const numbers = [
   {
     value: 'one',
@@ -78,6 +79,7 @@ const numbers = [
     label: 'Four',
   },
 ];
+*/
 
 const FbDefaultForm = () => {
   // Estado para vendedores
