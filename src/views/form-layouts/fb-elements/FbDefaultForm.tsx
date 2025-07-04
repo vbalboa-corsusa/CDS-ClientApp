@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   TextField,
   FormControlLabel,
@@ -65,28 +65,6 @@ export interface Monedas {
   nombre: string;
 }
 
-// Datos estáticos para otros campos
-/*
-const numbers = [
-  {
-    value: 'one',
-    label: 'One',
-  },
-  {
-    value: 'two',
-    label: 'Two',
-  },
-  {
-    value: 'three',
-    label: 'Three',
-  },
-  {
-    value: 'four',
-    label: 'Four',
-  },
-];
-*/
-
 // Mostrar la URL base que está usando el front
 console.log('URL que está usando el front:', api.defaults.baseURL);
 
@@ -125,6 +103,51 @@ const FbDefaultForm = () => {
     ubrutaCotizacion: '',
     comisionCompartida: false,
   });
+
+  //Guarda el estado del pedido
+  const [pedido, setPedido] = useState({
+    cliente: '',
+    clienteFinal: '',
+    clienteProveedor: '',
+    fechaRecepcion: '',
+    fechaInicio: '',
+    fechaProcesamientoVI: '',
+    formaPago: '',
+    moneda: '',
+    totalSinIGV: '',
+    vendedor: '',
+    vendedor1: '',
+    vendedor2: '',
+    lider: '',
+    nroOperacion: '',
+    nroReferenciaCliente: '',
+    ubrutaCotizacion: '',
+    comisionCompartida: false,
+  });
+
+// Maneja el cambio de los campos del formulario
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+) => {
+  const target = e.target as HTMLInputElement;
+  const { name, value, type, checked } = target;
+  setPedido((prev: typeof pedido) => ({
+    ...prev,
+    [name]: type === 'checkbox' ? checked : value,
+  }));
+};
+
+// Guardar la orden de pedido
+const guardarPedido = async () => {
+try {
+  await axios.post('https://localhost:7002/OrdenPedido', pedido);
+    alert('Pedido guardado correctamente');
+    // Opcional: limpiar el formulario o actualizar la lista
+} catch (error) {
+    alert('Error al guardar el pedido');
+    console.error(error);
+}
+};
 
   // Obtener vendedores al cargar el componente
 React.useEffect(() => {
@@ -170,6 +193,7 @@ React.useEffect(() => {
       });
   }, []);
 
+  /*
   const handleFormChange = (event: any) => {
     const { name, value, type, checked } = event.target;
     setFormData({
@@ -177,6 +201,7 @@ React.useEffect(() => {
       [name]: type === 'checkbox' ? checked : value,
     });
   };
+  */
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -203,8 +228,8 @@ React.useEffect(() => {
             select
             label="Cliente"
             name="cliente"
-            value={formData.cliente}
-            onChange={handleFormChange}
+            value={pedido.cliente}
+            onChange={handleChange}
             disabled={loading}
             helperText={error ? error : ''}
             error={!!error}
@@ -230,8 +255,8 @@ React.useEffect(() => {
             label="Cliente Final"
             variant="outlined"
             name="clienteFinal"
-            value={formData.clienteFinal}
-            onChange={handleFormChange}
+            value={pedido.clienteFinal}
+            onChange={handleChange}
             fullWidth
             sx={{
               mb: 2,
@@ -243,8 +268,8 @@ React.useEffect(() => {
             label="Cliente Proveedor"
             variant="outlined"
             name="clienteProveedor"
-            value={formData.clienteProveedor}
-            onChange={handleFormChange}
+            value={pedido.clienteProveedor}
+            onChange={handleChange}
             fullWidth
             sx={{
               mb: 2,
@@ -286,8 +311,8 @@ React.useEffect(() => {
             select
             label="Forma de Pago"
             name="formaPago"
-            value={formData.formaPago}
-            onChange={handleFormChange}
+            value={pedido.formaPago}
+            onChange={handleChange}
             sx={{
               mb: 2,
             }}
@@ -312,8 +337,8 @@ React.useEffect(() => {
             select
             label="Moneda"
             name="moneda"
-            value={formData.moneda}
-            onChange={handleFormChange}
+            value={pedido.moneda}
+            onChange={handleChange}
             sx={{
               mb: 2,
             }}
@@ -336,9 +361,9 @@ React.useEffect(() => {
             id="total-sin-igv"
             label="Total sin IGV"
             variant="outlined"
-            name="totalSinIgv"
-            value={formData.totalSinIgv}
-            onChange={handleFormChange}
+            name="totalSinIGV"
+            value={pedido.totalSinIGV}
+            onChange={handleChange}
             fullWidth
             sx={{
               mb: 2,
@@ -356,8 +381,8 @@ React.useEffect(() => {
             select
             label="Vendedor"
             name="vendedor"
-            value={formData.vendedor}
-            onChange={handleFormChange}
+            value={pedido.vendedor}
+            onChange={handleChange}
             /*
             disabled={loading}
             helperText={error ? error : ''}
@@ -387,8 +412,8 @@ React.useEffect(() => {
             select
             label="Vendedor 1"
             name="vendedor1"
-            value={formData.vendedor1}
-            onChange={handleFormChange}
+            value={pedido.vendedor1}
+            onChange={handleChange}
             disabled={loading}
             sx={{
               mb: 2,
@@ -414,8 +439,8 @@ React.useEffect(() => {
             select
             label="Vendedor 2"
             name="vendedor2"
-            value={formData.vendedor2}
-            onChange={handleFormChange}
+            value={pedido.vendedor2}
+            onChange={handleChange}
             disabled={loading}
             sx={{
               mb: 2,
@@ -441,8 +466,8 @@ React.useEffect(() => {
             select
             label="Lider"
             name="lider"
-            value={formData.lider}
-            onChange={handleFormChange}
+            value={pedido.lider}
+            onChange={handleChange}
             disabled={loading}
             sx={{
               mb: 2,
@@ -469,9 +494,9 @@ React.useEffect(() => {
             id="num-operacion"
             label="N° de Operación"
             variant="outlined"
-            name="numOperacion"
-            value={formData.numOperacion}
-            onChange={handleFormChange}
+            name="nroOperacion"
+            value={pedido.nroOperacion}
+            onChange={handleChange}
             fullWidth
             sx={{
               mb: 2,
@@ -482,9 +507,9 @@ React.useEffect(() => {
             id="num-referencia-cliente"
             label="N° Referencia de Cliente"
             variant="outlined"
-            name="numReferenciaCliente"
-            value={formData.numReferenciaCliente}
-            onChange={handleFormChange}
+            name="nroReferenciaCliente"
+            value={pedido.nroReferenciaCliente}
+            onChange={handleChange}
             fullWidth
             sx={{
               mb: 2,
@@ -496,8 +521,8 @@ React.useEffect(() => {
             label="Ubruta Cotización"
             variant="outlined"
             name="ubrutaCotizacion"
-            value={formData.ubrutaCotizacion}
-            onChange={handleFormChange}
+            value={pedido.ubrutaCotizacion}
+            onChange={handleChange}
             fullWidth
             sx={{
               mb: 2,
@@ -507,8 +532,8 @@ React.useEffect(() => {
           <FormControlLabel
               control={
               <Checkbox
-                checked={formData.comisionCompartida}
-                onChange={handleFormChange}
+                checked={pedido.comisionCompartida}
+                onChange={handleChange}
                 name="comisionCompartida"
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
@@ -521,6 +546,7 @@ React.useEffect(() => {
           <div>
 
           <Button
+            onClick={guardarPedido}
             sx={{ display: 'flex', justifyContent: 'center', mx: 'auto', mt: 2 }}
             color="primary"
             variant="contained"
@@ -536,3 +562,4 @@ React.useEffect(() => {
 };
 
 export default FbDefaultForm;
+

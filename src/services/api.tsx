@@ -23,7 +23,7 @@ export const getFormaPago = () => api.get('/FormaPago'); //3
 export const getMonedas = () => api.get('/Moneda'); //4
 
 export const getPedidos = () => api.get('/Pedido');
-export const postPedido = (data: any) => api.post('/Pedido', data);
+export const guardarPedido = (pedido: any) => api.post('/OrdenPedido', pedido);
 // Agrega aquí más endpoints según necesites
 
 export default api;
