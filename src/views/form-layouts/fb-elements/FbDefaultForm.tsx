@@ -83,28 +83,7 @@ const FbDefaultForm = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Estados para los campos del formulario
-  const [formData, setFormData] = React.useState<FormData>({
-    cliente: '',
-    clienteFinal: '',
-    clienteProveedor: '',
-    fechaRecepcion: '',
-    fechaInicio: '',
-    fechaProcesamiento: '',
-    formaPago: '',
-    moneda: '',
-    totalSinIgv: '',
-    vendedor: '',
-    vendedor1: '',
-    vendedor2: '',
-    lider: '',
-    numOperacion: '',
-    numReferenciaCliente: '',
-    ubrutaCotizacion: '',
-    comisionCompartida: false,
-  });
-
-  //Guarda el estado del pedido
+  // Guarda el estado del pedido
   const [pedido, setPedido] = useState({
     cliente: '',
     clienteFinal: '',
@@ -205,7 +184,7 @@ React.useEffect(() => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Datos del formulario:', formData);
+    console.log('Datos del formulario:', pedido);
     // Aquí puedes agregar la lógica para enviar los datos a tu API
     alert('Formulario enviado correctamente. Revisa la consola para ver los datos.');
   };
