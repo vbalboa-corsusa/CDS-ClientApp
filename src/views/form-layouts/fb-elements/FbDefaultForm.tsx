@@ -45,19 +45,19 @@ export interface Vendedor {
 // Define Clientes interface if not imported
 export interface Clientes {
   idCliente: string;
-  RazonSocial: string;
+  razonSocial: string;
 }
 
 // Define FormaPago interface if not imported
 export interface FormaPago {
   idFp: string;
-  DescripcionFp: string;
+  descripcionFp: string;
 }
 
 // Define Monedas interface if not imported
 export interface Monedas {
   idMda: string;
-  Nombre: string;
+  nombre: string;
 }
 
 // Datos estáticos para otros campos
@@ -211,9 +211,9 @@ React.useEffect(() => {
             ) : clientes.length === 0 ? (
               <MenuItem disabled>No hay clientes disponibles</MenuItem>
             ) : (
-              clientes.map((cliente) => (
-                <MenuItem key={cliente.idCliente} value={cliente.idCliente}>
-                  {cliente.RazonSocial}
+              clientes.map((cliente, idx) => (
+                <MenuItem key={cliente.idCliente || idx} value={cliente.idCliente}> {/* Usa el idCliente como valor */}
+                  {cliente.razonSocial}
                 </MenuItem>
               ))
             )}
@@ -309,9 +309,9 @@ React.useEffect(() => {
             ) : formaPago.length === 0 ? (
               <MenuItem disabled>No hay formas de pago disponibles</MenuItem>
             ) : (
-              formaPago.map((fp) => (
-                <MenuItem key={fp.idFp} value={fp.idFp}>
-                  {fp.DescripcionFp}
+              formaPago.map((fp, idx) => (
+                <MenuItem key={fp.idFp || idx} value={fp.idFp}>
+                  {fp.descripcionFp}
                 </MenuItem>
               ))
             )}
@@ -335,9 +335,9 @@ React.useEffect(() => {
             ) : monedas.length === 0 ? (
               <MenuItem disabled>No hay formas de monedas</MenuItem>
             ) : (
-              monedas.map((moneda) => (
-                <MenuItem key={moneda.idMda} value={moneda.idMda}>
-                  {moneda.Nombre}
+              monedas.map((moneda, idx) => (
+                <MenuItem key={moneda.idMda || idx} value={moneda.idMda}> {/* Usa el idMda como valor */}
+                  {moneda.nombre}
                 </MenuItem>
               ))
             )}
@@ -384,8 +384,8 @@ React.useEffect(() => {
             ) : vendedores.length === 0 ? (
               <MenuItem disabled>No hay vendedores disponibles</MenuItem>
             ) : (
-              vendedores.map((vendedor) => (
-                <MenuItem key={vendedor.idVendedor} value={vendedor.idVendedor}>
+              vendedores.map((vendedor, idx) => (
+                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}> {/* Usa el idVendedor como valor */}
                   {vendedor.nombreVendedor}
                 </MenuItem>
               ))
@@ -411,8 +411,8 @@ React.useEffect(() => {
             ) : vendedores.length === 0 ? (
               <MenuItem disabled>No hay vendedores disponibles</MenuItem>
             ) : (
-              vendedores.map((vendedor) => (
-                <MenuItem key={vendedor.idVendedor} value={vendedor.idVendedor}>
+              vendedores.map((vendedor, idx) => (
+                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}> {/* Usa el idVendedor como valor */}
                   {vendedor.nombreVendedor}
                 </MenuItem>
               ))
@@ -438,8 +438,8 @@ React.useEffect(() => {
             ) : vendedores.length === 0 ? (
               <MenuItem disabled>No hay vendedores disponibles</MenuItem>
             ) : (
-              vendedores.map((vendedor) => (
-                <MenuItem key={vendedor.idVendedor} value={vendedor.idVendedor}>
+              vendedores.map((vendedor, idx) => (
+                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}> {/* Usa el idVendedor como valor */}
                   {vendedor.nombreVendedor}
                 </MenuItem>
               ))
@@ -465,8 +465,8 @@ React.useEffect(() => {
             ) : vendedores.length === 0 ? (
               <MenuItem disabled>No hay lideres disponibles</MenuItem>
             ) : (
-              vendedores.map((vendedor) => (
-                <MenuItem key={vendedor.idVendedor} value={vendedor.idVendedor}>
+              vendedores.map((vendedor, idx) => (
+                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}> {/* Usa el idVendedor como valor */}
                   {vendedor.nombreVendedor}
                 </MenuItem>
               ))
