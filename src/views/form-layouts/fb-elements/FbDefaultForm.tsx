@@ -8,6 +8,11 @@ import {
   Box,
 } from '@mui/material';
 
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+
 import { getVendedores } from '../../../services/api';
 import { getClientes } from '../../../services/api';
 import { getFormaPago } from '../../../services/api';
@@ -86,6 +91,7 @@ const numbers = [
 console.log('URL que está usando el front:', api.defaults.baseURL);
 
 const FbDefaultForm = () => {
+
   // Estado para vendedores
   const [vendedores, setVendedores] = React.useState<Vendedor[]>([]);
   // Estado para clientes
@@ -98,7 +104,7 @@ const FbDefaultForm = () => {
   // Estado para manejar la carga y errores
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  
+
   // Estados para los campos del formulario
   const [formData, setFormData] = React.useState<FormData>({
     cliente: '',
@@ -186,7 +192,7 @@ React.useEffect(() => {
       {/* ------------------------------------------------------------------------------------------------ */}
 
         <BaseCard title="REGISTRO DE PEDIDOS">
-        
+
         <form onSubmit={handleSubmit}>
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
 
@@ -248,44 +254,26 @@ React.useEffect(() => {
         </Box>
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
 
-            <TextField
-            id="fecha-recepcion"
-            label="Fecha de Recepción"
-            variant="outlined"
-            name="fechaRecepcion"
-            value={formData.fechaRecepcion}
-            onChange={handleFormChange}
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-          />
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
+              <DatePicker
+                label="Fecha de Recepción"
+                sx={{ mb: 2, width: '100%' }}
+              />
+            </LocalizationProvider>
 
-          <TextField
-            id="fecha-inicio"
-            label="Fecha de Inicio"
-            variant="outlined"
-            name="fechaInicio"
-            value={formData.fechaInicio}
-            onChange={handleFormChange}
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-          />
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
+              <DatePicker
+                label="Fecha de Inicio"
+                sx={{ mb: 2, width: '100%' }}
+              />
+            </LocalizationProvider>
 
-          <TextField
-            id="fecha-procesamiento"
-            label="Fecha de Procesamiento VI"
-            variant="outlined"
-            name="fechaProcesamiento"
-            value={formData.fechaProcesamiento}
-            onChange={handleFormChange}
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-          />
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
+              <DatePicker
+                label="Fecha de Procesamiento VI"
+                sx={{ mb: 2, width: '100%' }}
+              />
+            </LocalizationProvider>
 
         </Box>
 
@@ -343,7 +331,7 @@ React.useEffect(() => {
             )}
           </TextField>
 
-          
+
           <TextField
             id="total-sin-igv"
             label="Total sin IGV"
@@ -359,7 +347,7 @@ React.useEffect(() => {
 
         </Box>
 
-        <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>          
+        <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
 
           <TextField
             fullWidth
@@ -391,7 +379,7 @@ React.useEffect(() => {
               ))
             )}
           </TextField>
-          
+
           <TextField
             fullWidth
             id="standard-select-number-vendedor1"
@@ -471,7 +459,7 @@ React.useEffect(() => {
                 </MenuItem>
               ))
             )}
-          </TextField>                    
+          </TextField>
 
         </Box>
 
@@ -501,7 +489,7 @@ React.useEffect(() => {
             sx={{
               mb: 2,
             }}
-          />          
+          />
 
           <TextField
             id="ubruta-cotizacion"
@@ -530,105 +518,8 @@ React.useEffect(() => {
 
         </Box>
 
-          {/* <TextField
-            id="outlined-multiline-static"
-            label="Descripción"
-            multiline
-            rows={6}
-            variant="outlined"
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-          /> */}
-          
-          {/* <TextField
-            id="readonly-text"
-            label="Read Only"
-            defaultValue=""
-            slotProps={{
-              input: {
-                readOnly: true,
-              },
-            }}
-            variant="outlined"
-            fullWidth
-            sx={{
-              mb: 2,
-            }}
-          /> */}
-          
-          {/* <Grid
-            container
-            spacing={0}
-            sx={{
-              mb: 2,
-            }}
-          >
-            <Grid size={{ lg: 4, md: 6, sm: 12 }}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedA}
-                    onChange={handleChange}
-                    name="checkedA"
-                    color="primary"
-                  />
-                }
-                label="Check this custom checkbox"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedB}
-                    onChange={handleChange}
-                    name="checkedB"
-                    color="primary"
-                  />
-                }
-                label="Check this custom checkbox"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedC}
-                    onChange={handleChange}
-                    name="checkedC"
-                    color="primary"
-                  />
-                }
-                label="Check this custom checkbox"
-              />
-            </Grid>
-            <Grid size={{ lg: 4, md: 6, sm: 12 }}>
-              <FormControl component="fieldset">
-                <RadioGroup
-                  aria-label="gender"
-                  name="gender1"
-                  value={value}
-                  onChange={handleChange2}
-                >
-                  <FormControlLabel
-                    value="radio1"
-                    control={<Radio />}
-                    label="Toggle this custom radio"
-                  />
-                  <FormControlLabel
-                    value="radio2"
-                    control={<Radio />}
-                    label="Toggle this custom radio"
-                  />
-                  <FormControlLabel
-                    value="radio3"
-                    control={<Radio />}
-                    label="Toggle this custom radio"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
-          </Grid> */}
           <div>
-          
+
           <Button
             sx={{ display: 'flex', justifyContent: 'center', mx: 'auto', mt: 2 }}
             color="primary"

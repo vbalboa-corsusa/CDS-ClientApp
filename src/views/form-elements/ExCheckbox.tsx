@@ -112,7 +112,6 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
     peticionGet();
   }, []);
 
-  
   return (
     <>
       <div>
@@ -126,7 +125,7 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
           borderRadius: '50px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
         }}>Buscar Registro / ORDEN PEDIDO</h1>
-        <input 
+        <input
         style={{
           backgroundColor: 'rgba(127, 227, 245, 0.5)',
           color: 'darkblue',
@@ -139,18 +138,18 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
           marginBottom: '15px'
         }}
         placeholder="Buscar por Cliente, Nombre Vendedor..."
-        ></input> 
+        ></input>
       </div>
 
       <div className="App"
-      style={{ overflowX: 'auto', marginLeft: '0px' }}>             
+      style={{ overflowX: 'auto', marginLeft: '0px' }}>
         <br />
         <table className="table table-striped table-bordered"
           style={{
           width: "200%",
           fontSize: "14px",
           tableLayout: "auto",
-          
+
           /*marginLeft: "0"*/
         }}
         >
@@ -165,11 +164,11 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
               <th>Fecha Procesamiento VI</th>
               <th>Forma de Pago</th>
               <th>Moneda</th>
-              <th>Total sin IGV</th>              
+              <th>Total sin IGV</th>
               {/* <th>N° Documento</th> */}
               <th>Vendedor</th>
               <th>Activo</th>
-              <th>Acciones</th>            
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -194,7 +193,7 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
                 </td>
               </tr>
             ))}
-          </tbody>  
+          </tbody>
         </table>
 
         {/* Modal para insertar un nuevo gestor de base de datos */}
