@@ -18,7 +18,7 @@ type Vendedor = {
 
 function App() {
 
-// const baseUrl = "https://localhost:7002/Vendedor"; // funciona en local se debe crear .env con REACT_APP_API_URL=http://localhost:7002/Vendedor 
+// const baseUrl = "https://localhost:7002/Vendedor"; // funciona en local se debe crear .env con REACT_APP_API_URL=http://localhost:7002/Vendedor
 // const baseUrl = import.meta.env.VITE_API_URL ?? "https://localhost:7002/Vendedor";
 let baseUrl = import.meta.env.VITE_API_URL_HTTPS; // valor por defecto
 
@@ -32,7 +32,7 @@ if (window.location.hostname === "localhost") {
 console.log("URL que está usando el front:", baseUrl);
 const [data, setData] = useState<Vendedor[]>([]);
 const [modalInsertar, setModalInsertar] = useState(false);
-const [modalEditar, setModalEditar] = useState(false); 
+const [modalEditar, setModalEditar] = useState(false);
 const [gestorSeleccion, setGestorSeleccion] = useState<Vendedor>({
     idVendedor: '',
     numDocVendedor: '',
@@ -125,7 +125,7 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
             <th>N° Documento</th>
             <th>Nombre</th>
             <th>Activo</th>
-            <th>Acciones</th>            
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -141,7 +141,7 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
               </td>
             </tr>
           ))}
-        </tbody>  
+        </tbody>
       </table>
 
       {/* Modal para insertar un nuevo gestor de base de datos */}

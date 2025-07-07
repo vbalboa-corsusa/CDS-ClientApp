@@ -3,13 +3,8 @@ import axios from 'axios';
 // Detectar entorno y definir baseURL
 let baseUrl = '';
 
-if (window.location.hostname === 'localhost') {
-  // En entorno local, usar HTTPS directamente para evitar redirección 307
-  baseUrl = import.meta.env.VITE_API_URL_HTTPS || 'https://localhost:7002';
-} else {
-  // En producción (Railway, nube, etc.)
-  baseUrl = import.meta.env.VITE_API_URL_NUBE;
-}
+// Usar Render como API principal
+baseUrl = 'https://cds-api.onrender.com';
 
 // Instancia de Axios
 const api = axios.create({
