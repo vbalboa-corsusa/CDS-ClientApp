@@ -75,7 +75,7 @@ const Menuitems: MenuitemsType[] = [
     title: 'Buttons',
     icon: "menu-dots-circle-line-duotone",
     href: '/form-elements/button',
-  },  
+  },
   {
     id: uniqueId(),
     title: 'Radio',
@@ -445,7 +445,7 @@ const Menuitems: MenuitemsType[] = [
     href: 'https://materialpro-react-main.netlify.app/forms/form-tiptap',
     chip: "Pro",
   },
-  
+
   {
     navlabel: true,
     subheader: 'Widgets',
@@ -915,7 +915,7 @@ const Menuitems: MenuitemsType[] = [
     icon: "shield-user-linear",
     href: '/auth/register',
   },
-  
+
   /*
   {
     id: uniqueId(),
@@ -961,7 +961,7 @@ const Menuitems: MenuitemsType[] = [
           },
         ],
       },
-    
+
       {
         id: uniqueId(),
         title: 'Two Steps',
@@ -1002,7 +1002,7 @@ const Menuitems: MenuitemsType[] = [
     ]
   },
   */
-  
+
   /*
   {
     navlabel: true,

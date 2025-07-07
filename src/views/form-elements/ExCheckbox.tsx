@@ -7,6 +7,8 @@ import axios from 'axios';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { useState, useEffect } from 'react';
 import { getVendedores } from '../../services/api';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 type Vendedor = {
@@ -112,6 +114,8 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
     peticionGet();
   }, []);
 
+  const [limite, setLimite] = useState(10); // Por defecto 10
+
   return (
     <>
       <div>
@@ -141,10 +145,20 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
         ></input>
       </div>
 
+      <label>
+        Mostrar&nbsp;
+        <select value={limite} onChange={e => setLimite(Number(e.target.value))}>
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+          <option value={50}>50</option>
+          <option value={100}>100</option>
+        </select>
+        &nbsp;registros.
+      </label>
       <div className="App"
       style={{ overflowX: 'auto', marginLeft: '0px' }}>
         <br />
-        <table className="table table-striped table-bordered"
+        <table className="table table-bordered"
           style={{
           width: "200%",
           fontSize: "14px",
@@ -168,11 +182,11 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
               {/* <th>N° Documento</th> */}
               <th>Vendedor</th>
               <th>Activo</th>
-              <th>Acciones</th>
+              <th className='sticky-col'>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(data) && data.map(vendedor => (
+            {Array.isArray(data) && data.slice(0, limite).map(vendedor => (
               <tr key={vendedor?.idVendedor ?? `${vendedor.numDocVendedor}-${Math.random()}`}>
                <td>{vendedor.idVendedor}</td>
                <td></td>
@@ -187,9 +201,13 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
                {/* <td>{vendedor.numDocVendedor}</td> */}
                <td>{vendedor.nombreVendedor}</td>
                <td>{vendedor.Estado ? "0" : "1"}</td>
-               <td>
-                  <button className="btn btn-primary" onClick={()=>seleccionarGestor(vendedor, "Editar")}>Editar</button> {" "}
-                  <button className="btn btn-danger">Eliminar</button>
+               <td className='sticky-col'>
+                  <button className="btn btn-primary" onClick={()=>seleccionarGestor(vendedor, "Editar")}>
+                    <EditIcon/>
+                  </button> {" "}
+                  <button className="btn btn-danger">
+                    <DeleteIcon/>
+                  </button>
                 </td>
               </tr>
             ))}

@@ -28,6 +28,15 @@
   color: #61dafb;
 }
 
+.sticky-col {
+  position: sticky;
+  right: 0;
+  background: white;
+  z-index: 2;
+  min-width: 120px;
+  box-shadow: -2px 0 5px -2px #ccc; /*Optional shadow for better visibility*/
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

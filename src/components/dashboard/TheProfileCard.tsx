@@ -29,10 +29,10 @@ const ProfileCard = () => {
             sx={{ width: 100, height: 100, m: "0 auto" }}
           />
           <Typography variant="h5" fontSize='24px' mt={4} mb={1}>
-            Renzo Ascona
+            Víctor Balboa
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" mb={2}>
-            Desarrollador Low Code
+            Desarrollador de Software Backend
           </Typography>
           <Button variant="contained" color="primary">
             Seguir

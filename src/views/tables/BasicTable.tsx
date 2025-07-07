@@ -7,7 +7,8 @@ import axios from 'axios';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { useState, useEffect } from 'react';
 import { getVendedores } from '../../services/api';
-
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type Vendedor = {
   idVendedor?: number | string;
@@ -136,8 +137,12 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
              <td>{vendedor.nombreVendedor}</td>
              <td>{vendedor.Estado ? "0" : "1"}</td>
              <td>
-                <button className="btn btn-primary" onClick={()=>seleccionarGestor(vendedor, "Editar")}>Editar</button> {" "}
-                <button className="btn btn-danger">Eliminar</button>
+                <button className="btn btn-primary" onClick={()=>seleccionarGestor(vendedor, "Editfdasar")}>
+                  <EditIcon/>
+                </button> {" "}
+                <button className="btn btn-danger">
+                  <DeleteIcon/>
+                </button>
               </td>
             </tr>
           ))}

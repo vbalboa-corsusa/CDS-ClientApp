@@ -111,7 +111,7 @@ export const Profile = () => {
                 overflow: 'hidden',
               }}
             >
-              Renzo Ascona
+              Víctor Balboa
             </Typography>
             <Box>
               <Tooltip title="User" placement="top">

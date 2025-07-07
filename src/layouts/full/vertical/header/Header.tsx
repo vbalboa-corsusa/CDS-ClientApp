@@ -31,11 +31,11 @@ const Header = () => {
     background: theme.palette.primary.main,
     justifyContent: 'center',
     position: 'fixed',
-    top: '72px',
+    top: '0px',
     backdropFilter: 'blur(4px)',
     [theme.breakpoints.down('md')]: {
       minHeight: '64px',
-      top: '157px',
+      top: '0px',
     },
   }));
   const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
