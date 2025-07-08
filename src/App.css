@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  overflow-x: auto;
+  background: #fff;
 }
 
 .App-logo {
@@ -28,13 +30,48 @@
   color: #61dafb;
 }
 
-.sticky-col {
+/* .sticky-col {
   position: sticky;
   right: 0;
-  background: white;
+  background: white !important;
   z-index: 2;
-  min-width: 120px;
-  box-shadow: -2px 0 5px -2px #ccc; /*Optional shadow for better visibility*/
+  min-width: 90px;
+  /* max-width: 120px; */
+  /* box-shadow: -2px 0 5px -2px #ccc; Optional shadow for better visibility */
+  /* border-left: 2px solid #eee;
+  text-align: center;
+} */
+@media (min-width: 992px) {
+  .sticky-col {
+    position: sticky;
+    right: 0;
+    background: #fff !important;
+    z-index: 2;
+    min-width: 90px;
+    text-align: center;
+  }
+}
+@media (max-width: 991px) {
+  .sticky-col {
+    position: static;
+  }
+}
+
+.table {
+  border-right: 2px solid #eee;
+}
+
+.table tr,
+.table th,
+.table td {
+  background: #fff !important;
+}
+
+.main-wrapper {
+  width: 80vw;
+  /* max-width: 1600px;
+  min-width: 320px; */
+  margin: 0 auto;
 }
 
 @keyframes App-logo-spin {
@@ -44,4 +81,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+html {
+  zoom: 0.8;
 }
