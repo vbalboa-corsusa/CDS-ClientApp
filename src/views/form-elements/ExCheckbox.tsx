@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'src/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { getOrdenesPedido } from '../../services/api';
-// Importar el modelo OrdenPedido
+// Modelo OrdenPedido
 import { OrdenPedido } from '../../models/OrdenPedido';
 import { FaFilter } from 'react-icons/fa';
 
