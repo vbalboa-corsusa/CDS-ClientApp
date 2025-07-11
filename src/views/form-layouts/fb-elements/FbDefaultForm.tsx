@@ -6,6 +6,7 @@ import {
   Button,
   MenuItem,
   Box,
+  Autocomplete,
 } from '@mui/material';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -45,6 +46,7 @@ export interface FormData {
 export interface Vendedor {
   idVendedor: string;
   nombreVendedor: string;
+  ibLider: boolean | number;
 }
 
 // Define Clientes interface if not imported
@@ -116,6 +118,8 @@ const handleChange = (
   }));
 };
 
+const lideres = vendedores.filter(v => v.ibLider === true || v.ibLider === 1);
+
 // Guardar la orden de pedido
 const guardarPedido = async () => {
 try {
@@ -131,7 +135,9 @@ try {
   // Obtener vendedores al cargar el componente
 React.useEffect(() => {
   getVendedores()
-    .then((res) => setVendedores(res.data as Vendedor[]))
+      .then((res) => {setVendedores(res.data as Vendedor[]);
+      console.log('Vendedores:', res.data);
+      })
       .catch((err) => {
         console.error('Error al obtener vendedores:', err);
         setError('Error al cargar los vendedores. Por favor, intente nuevamente.');
@@ -200,34 +206,33 @@ React.useEffect(() => {
         <form onSubmit={handleSubmit}>
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
 
-          <TextField
-            fullWidth
-            id="standard-select-number-cliente"
-            variant="outlined"
-            select
-            label="Cliente"
-            name="cliente"
-            value={pedido.cliente}
-            onChange={handleChange}
-            disabled={loading}
-            helperText={error ? error : ''}
-            error={!!error}
-            sx={{
-              mb: 2,
-            }}
-          >
-            {loading ? (
-              <MenuItem disabled>Cargando clientes...</MenuItem>
-            ) : clientes.length === 0 ? (
-              <MenuItem disabled>No hay clientes disponibles</MenuItem>
-            ) : (
-              clientes.map((cliente, idx) => (
-                <MenuItem key={cliente.idCliente || idx} value={cliente.idCliente}> {/* Usa el idCliente como valor */}
-                  {cliente.razonSocial}
-                </MenuItem>
-              ))
+          {/* CAMPO CLIENTE COMO AUTOCOMPLETE */}
+          <Autocomplete
+            id="autocomplete-cliente"
+            options={clientes}
+            getOptionLabel={(option) => option.razonSocial}
+            value={clientes.find(c => c.idCliente === pedido.cliente) || null}
+            onChange={(_event, newValue) => setPedido(prev => ({ ...prev, cliente: newValue ? newValue.idCliente : '' }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Cliente"
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { fontSize: '13px' },
+                }}
+                InputLabelProps={{ style: { fontSize: '13px' } }}
+                sx={{ mb: 2, minWidth: 220 }}
+                helperText={error ? error : ''}
+                error={!!error}
+              />
             )}
-          </TextField>
+            sx={{ width: 250, fontSize: '13px' }}
+            ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
+            disabled={loading}
+          />
 
           <TextField
             id="cliente-final"
@@ -237,9 +242,8 @@ React.useEffect(() => {
             value={pedido.clienteFinal}
             onChange={handleChange}
             fullWidth
-            sx={{
-              mb: 2,
-            }}
+            size="small"
+            sx={{ mb: 2, fontSize: '13px' }}
           />
 
           <TextField
@@ -250,9 +254,8 @@ React.useEffect(() => {
             value={pedido.clienteProveedor}
             onChange={handleChange}
             fullWidth
-            sx={{
-              mb: 2,
-            }}
+            size="small"
+            sx={{ mb: 2, fontSize: '13px' }}
           />
 
         </Box>
@@ -282,8 +285,33 @@ React.useEffect(() => {
         </Box>
 
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
+          {/* CAMPO FORMA DE PAGO COMO AUTOCOMPLETE */}
+          <Autocomplete
+            id="autocomplete-forma-pago"
+            options={formaPago}
+            getOptionLabel={(option) => option.descripcionFp}
+            value={formaPago.find(fp => fp.idFp === pedido.formaPago) || null}
+            onChange={(_event, newValue) => setPedido(prev => ({ ...prev, formaPago: newValue ? newValue.idFp : '' }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Forma de Pago"
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { fontSize: '13px' },
+                }}
+                InputLabelProps={{ style: { fontSize: '13px' } }}
+                sx={{ mb: 2, minWidth: 220 }}
+              />
+            )}
+            sx={{ width: 250, fontSize: '13px' }}
+            ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
+            disabled={loading}
+          />
 
-          <TextField
+          {/* <TextField
             fullWidth
             id="standard-select-number-forma-pago"
             variant="outlined"
@@ -292,9 +320,8 @@ React.useEffect(() => {
             name="formaPago"
             value={pedido.formaPago}
             onChange={handleChange}
-            sx={{
-              mb: 2,
-            }}
+            size="small"
+            sx={{ mb: 2, fontSize: '13px' }}
           >
             {loading ? (
               <MenuItem disabled>Cargando formas de pago...</MenuItem>
@@ -302,14 +329,51 @@ React.useEffect(() => {
               <MenuItem disabled>No hay formas de pago disponibles</MenuItem>
             ) : (
               formaPago.map((fp, idx) => (
-                <MenuItem key={fp.idFp || idx} value={fp.idFp}>
+                <MenuItem key={fp.idFp || idx} value={fp.idFp} style={{ fontSize: '13px' }}>
                   {fp.descripcionFp}
                 </MenuItem>
               ))
             )}
-          </TextField>
+          </TextField> */}
 
-          <TextField
+          {/* CAMPO MONEDA SOLO SÍMBOLO */}
+          <Autocomplete
+            id='autocomplete-moneda'
+            options={monedas}
+            getOptionLabel={(option) => {
+              let simbolo = '';
+              switch ((option.nombre || '').toUpperCase()) {
+                case 'SOLES': simbolo = 'S/'; break;
+                case 'DOLARES AMERICANOS': simbolo = '$'; break;
+                case 'EURO': simbolo = '€'; break;
+                case 'YEN': simbolo = '¥'; break;
+                default: simbolo = option.nombre;
+              }
+              return simbolo;
+            }}
+            value={monedas.find(m => m.idMda === pedido.moneda) || null}
+            onChange={(_event, newValue) => setPedido(prev => ({ ...prev, moneda: newValue ? newValue.idMda : '' }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Moneda"
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { fontSize: '13px' },
+                }}
+                InputLabelProps={{ style: { fontSize: '13px' } }}
+                sx={{ mb: 2, minWidth: 220 }}
+              />
+            )}
+            sx={{ width: 250, fontSize: '13px' }}
+            ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
+            disabled={loading}
+            // clearOnEscape // Permite limpiar el campo con Escape
+          />
+
+          {/* <TextField
             fullWidth
             id="standard-select-number-moneda"
             variant="outlined"
@@ -318,22 +382,31 @@ React.useEffect(() => {
             name="moneda"
             value={pedido.moneda}
             onChange={handleChange}
-            sx={{
-              mb: 2,
-            }}
+            size="small"
+            sx={{ mb: 2, fontSize: '13px', minWidth: 120 }}
           >
             {loading ? (
               <MenuItem disabled>Cargando formas de monedas...</MenuItem>
             ) : monedas.length === 0 ? (
               <MenuItem disabled>No hay formas de monedas</MenuItem>
             ) : (
-              monedas.map((moneda, idx) => (
-                <MenuItem key={moneda.idMda || idx} value={moneda.idMda}> {/* Usa el idMda como valor */}
-                  {moneda.nombre}
-                </MenuItem>
-              ))
+              monedas.map((moneda, idx) => {
+                let simbolo = '';
+                switch ((moneda.nombre || '').toUpperCase()) {
+                  case 'SOLES': simbolo = 'S/'; break;
+                  case 'DOLARES AMERICANOS': simbolo = '$'; break;
+                  case 'EURO': simbolo = '€'; break;
+                  case 'YEN': simbolo = '¥'; break;
+                  default: simbolo = moneda.nombre;
+                }
+                return (
+                  <MenuItem key={moneda.idMda || idx} value={moneda.idMda} style={{ fontSize: '13px' }}>
+                    {simbolo}
+                  </MenuItem>
+                );
+              })
             )}
-          </TextField>
+          </TextField> */}
 
 
           <TextField
@@ -352,93 +425,85 @@ React.useEffect(() => {
         </Box>
 
         <Box sx={{ display: 'flex', gap: 4, mb: 1 }}>
-
-          <TextField
-            fullWidth
-            id="standard-select-number-vendedor"
-            variant="outlined"
-            select
-            label="Vendedor"
-            name="vendedor"
-            value={pedido.vendedor}
-            onChange={handleChange}
-            /*
-            disabled={loading}
-            helperText={error ? error : ''}
-            error={!!error}
-            */
-            sx={{
-              mb: 2,
-            }}
-          >
-            {loading ? (
-              <MenuItem disabled>Cargando vendedores...</MenuItem>
-            ) : vendedores.length === 0 ? (
-              <MenuItem disabled>No hay vendedores disponibles</MenuItem>
-            ) : (
-              vendedores.map((vendedor, idx) => (
-                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}> {/* Usa el idVendedor como valor */}
-                  {vendedor.nombreVendedor}
-                </MenuItem>
-              ))
+          {/* Vendedor 1 */}
+          <Autocomplete
+            id="autocomplete-vendedor1"
+            options={vendedores}
+            getOptionLabel={(option) => option.nombreVendedor}
+            value={vendedores.find(v => v.idVendedor === pedido.vendedor1) || null}
+            onChange={(_event, newValue) => setPedido(prev => ({ ...prev, vendedor1: newValue ? newValue.idVendedor : '' }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Vendedor 1"
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { fontSize: '13px' },
+                }}
+                InputLabelProps={{ style: { fontSize: '13px' } }}
+                sx={{ mb: 2, minWidth: 220 }}
+                helperText={error ? error : ''}
+                error={!!error}
+              />
             )}
-          </TextField>
-
-          <TextField
-            fullWidth
-            id="standard-select-number-vendedor1"
-            variant="outlined"
-            select
-            label="Vendedor 1"
-            name="vendedor1"
-            value={pedido.vendedor1}
-            onChange={handleChange}
+            sx={{ width: 250, fontSize: '13px' }}
+            ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
             disabled={loading}
-            sx={{
-              mb: 2,
-            }}
-          >
-            {loading ? (
-              <MenuItem disabled>Cargando vendedores...</MenuItem>
-            ) : vendedores.length === 0 ? (
-              <MenuItem disabled>No hay vendedores disponibles</MenuItem>
-            ) : (
-              vendedores.map((vendedor, idx) => (
-                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}> {/* Usa el idVendedor como valor */}
-                  {vendedor.nombreVendedor}
-                </MenuItem>
-              ))
+          />
+          {/* Vendedor 2 */}
+          <Autocomplete
+            id='autocomplete-vendedor2'
+            options={vendedores}
+            getOptionLabel={(option) => option.nombreVendedor}
+            value={vendedores.find(v => v.idVendedor === pedido.vendedor2) || null}
+            onChange={(_event, newValue) => setPedido(prev => ({ ...prev, vendedor2: newValue ? newValue.idVendedor : '' }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Vendedor 2"
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { fontSize: '13px' },
+                }}
+                InputLabelProps={{ style: { fontSize: '13px' } }}
+                sx={{ mb: 2, minWidth: 220 }}
+              />
             )}
-          </TextField>
-
-          <TextField
-            fullWidth
-            id="standard-select-number-vendedor2"
-            variant="outlined"
-            select
-            label="Vendedor 2"
-            name="vendedor2"
-            value={pedido.vendedor2}
-            onChange={handleChange}
+            sx={{ width: 250, fontSize: '13px' }}
+            ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
             disabled={loading}
-            sx={{
-              mb: 2,
-            }}
-          >
-            {loading ? (
-              <MenuItem disabled>Cargando vendedores...</MenuItem>
-            ) : vendedores.length === 0 ? (
-              <MenuItem disabled>No hay vendedores disponibles</MenuItem>
-            ) : (
-              vendedores.map((vendedor, idx) => (
-                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}> {/* Usa el idVendedor como valor */}
-                  {vendedor.nombreVendedor}
-                </MenuItem>
-              ))
-            )}
-          </TextField>
+          />
 
-          <TextField
+          <Autocomplete
+            id='autocomplete-lider'
+            options={lideres}
+            getOptionLabel={(option) => option.nombreVendedor}
+            value={lideres.find(v => v.idVendedor === pedido.lider) || null}
+            onChange={(_event, newValue) => setPedido(prev => ({ ...prev, lider: newValue ? newValue.idVendedor : '' }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Lider"
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { fontSize: '13px' },
+                }}
+                InputLabelProps={{ style: { fontSize: '13px' } }}
+                sx={{ mb: 2, minWidth: 220 }}
+              />
+            )}
+            sx={{ width: 250, fontSize: '13px' }}
+            ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
+            disabled={loading}
+          />
+
+          {/* <TextField
             fullWidth
             id="standard-select-number-lider"
             variant="outlined"
@@ -458,12 +523,12 @@ React.useEffect(() => {
               <MenuItem disabled>No hay lideres disponibles</MenuItem>
             ) : (
               vendedores.map((vendedor, idx) => (
-                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}> {/* Usa el idVendedor como valor */}
+                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}>
                   {vendedor.nombreVendedor}
                 </MenuItem>
               ))
             )}
-          </TextField>
+          </TextField> */}
 
         </Box>
 
