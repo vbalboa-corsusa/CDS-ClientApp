@@ -4,7 +4,6 @@ import {
   FormControlLabel,
   Checkbox,
   Button,
-  MenuItem,
   Box,
   Autocomplete,
 } from '@mui/material';
@@ -373,42 +372,6 @@ React.useEffect(() => {
             // clearOnEscape // Permite limpiar el campo con Escape
           />
 
-          {/* <TextField
-            fullWidth
-            id="standard-select-number-moneda"
-            variant="outlined"
-            select
-            label="Moneda"
-            name="moneda"
-            value={pedido.moneda}
-            onChange={handleChange}
-            size="small"
-            sx={{ mb: 2, fontSize: '13px', minWidth: 120 }}
-          >
-            {loading ? (
-              <MenuItem disabled>Cargando formas de monedas...</MenuItem>
-            ) : monedas.length === 0 ? (
-              <MenuItem disabled>No hay formas de monedas</MenuItem>
-            ) : (
-              monedas.map((moneda, idx) => {
-                let simbolo = '';
-                switch ((moneda.nombre || '').toUpperCase()) {
-                  case 'SOLES': simbolo = 'S/'; break;
-                  case 'DOLARES AMERICANOS': simbolo = '$'; break;
-                  case 'EURO': simbolo = '€'; break;
-                  case 'YEN': simbolo = '¥'; break;
-                  default: simbolo = moneda.nombre;
-                }
-                return (
-                  <MenuItem key={moneda.idMda || idx} value={moneda.idMda} style={{ fontSize: '13px' }}>
-                    {simbolo}
-                  </MenuItem>
-                );
-              })
-            )}
-          </TextField> */}
-
-
           <TextField
             id="total-sin-igv"
             label="Total sin IGV"
@@ -502,33 +465,6 @@ React.useEffect(() => {
             ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
             disabled={loading}
           />
-
-          {/* <TextField
-            fullWidth
-            id="standard-select-number-lider"
-            variant="outlined"
-            select
-            label="Lider"
-            name="lider"
-            value={pedido.lider}
-            onChange={handleChange}
-            disabled={loading}
-            sx={{
-              mb: 2,
-            }}
-          >
-            {loading ? (
-              <MenuItem disabled>Cargando vendedores...</MenuItem>
-            ) : vendedores.length === 0 ? (
-              <MenuItem disabled>No hay lideres disponibles</MenuItem>
-            ) : (
-              vendedores.map((vendedor, idx) => (
-                <MenuItem key={vendedor.idVendedor || idx} value={vendedor.idVendedor}>
-                  {vendedor.nombreVendedor}
-                </MenuItem>
-              ))
-            )}
-          </TextField> */}
 
         </Box>
 
