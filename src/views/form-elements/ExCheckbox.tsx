@@ -1,120 +1,58 @@
-import React from 'react';
-// import '.src/App.css';
+import React, { useEffect, useState } from 'react';
 import 'src/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { useState, useEffect } from 'react';
-import { getVendedores } from '../../services/api';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { getOrdenesPedido } from '../../services/api';
+// Importar el modelo OrdenPedido
+import { OrdenPedido } from '../../models/OrdenPedido';
+import { FaFilter } from 'react-icons/fa';
 
+const App = () => {
+  const [data, setData] = useState<OrdenPedido[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [limite, setLimite] = useState(10); // Por defecto 10
 
-type Vendedor = {
-  idVendedor?: number | string;
-  numDocVendedor: string;
-  nombreVendedor: string;
-  Estado?: boolean | number;
-};
-
-function App() {
-
-// const baseUrl = "https://localhost:7002/Vendedor"; // funciona en local se debe crear .env con REACT_APP_API_URL=http://localhost:7002/Vendedor 
-// const baseUrl = import.meta.env.VITE_API_URL ?? "https://localhost:7002/Vendedor";
-let baseUrl = import.meta.env.VITE_API_URL_HTTPS; // valor por defecto
-
-if (window.location.hostname === "localhost") {
-  // Si el front corre en localhost, usa el backend local
-  baseUrl = import.meta.env.VITE_API_URL_HTTPS;
-} else {
-  // Si está en Netlify u otro dominio, usa la nube
-  baseUrl = import.meta.env.VITE_API_URL_NUBE;
-}
-console.log("URL que está usando el front:", baseUrl);
-const [data, setData] = useState<Vendedor[]>([]);
-const [modalInsertar, setModalInsertar] = useState(false);
-const [modalEditar, setModalEditar] = useState(false); 
-const [gestorSeleccion, setGestorSeleccion] = useState<Vendedor>({
-    idVendedor: '',
-    numDocVendedor: '',
-    nombreVendedor: ''
-});
-
-interface HandleChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
-
-const handleChange = (e: HandleChangeEvent): void => {
-  const { name, value } = e.target;
-  setGestorSeleccion({
-    ...gestorSeleccion,
-    [name]: value
+  // Estados para búsqueda y filtros
+  const [search, setSearch] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [filtros, setFiltros] = useState({
+    cliente: '',
+    vendedor: '',
+    estado: '',
+    fechaDesde: '',
+    fechaHasta: ''
   });
-  console.log(gestorSeleccion);
-}
-
-const abrirCerrarModalInsertar = () => {
-  setModalInsertar(!modalInsertar);
-};
-
-const abrirCerrarModalEditar = () => {
-  setModalEditar(!modalEditar);
-};
-
-const peticionGet = async () => {
-  await getVendedores()
-    .then(response => {
-      setData(response.data as Vendedor[]);
-    }).catch(error => {
-      console.error("Error al obtener los datos:", error);
-    })
-};
-
-const peticionPost = async () => {
-  delete gestorSeleccion.idVendedor; // Asegurarse de que no se envíe el ID_Vendedor al crear un nuevo registro
-  //gestorSeleccion.numDocVendedor = String(gestorSeleccion.numDocVendedor); // Asegurarse de que sea un número
-  await axios.post(baseUrl, gestorSeleccion)
-    .then(response => {
-      setData(data.concat(response.data as Vendedor)); // Agregar el nuevo registro a la lista
-      abrirCerrarModalInsertar(); // Cerrar el modal después de insertar
-    }).catch(error => {
-      console.error("Error al insertar el registro:", error);
-    })
-};
-
-const peticionPut = async () => {
-  gestorSeleccion.idVendedor = gestorSeleccion.idVendedor !== undefined ? parseInt(String(gestorSeleccion.idVendedor)) : undefined; // Asegurarse de que sea un número
-  await axios.put(baseUrl+"/"+gestorSeleccion.idVendedor, gestorSeleccion)
-  .then(response => {
-    var respuesta = response.data as Vendedor;
-    var dataAuxiliar = data;
-    dataAuxiliar.map(vendedor => {
-      if(vendedor.idVendedor === gestorSeleccion.idVendedor){
-        vendedor.numDocVendedor = respuesta.numDocVendedor;
-        vendedor.nombreVendedor = respuesta.nombreVendedor;
-      }
-    })
-    abrirCerrarModalEditar(); // Cerrar el modal después de editar
-  }).catch(error => {
-    console.error("Error al editar el registro:", error);
-  })
-}
-
-/*interface SeleccionarGestorProps {
-  vendedor: Vendedor;
-  caso: string;
-}*/
-
-const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
-  setGestorSeleccion(vendedor);
-  (caso === "Editar") &&
-    abrirCerrarModalEditar();
-};
 
   useEffect(() => {
-    peticionGet();
+    getOrdenesPedido()
+      .then(response => {
+        setData(response.data as OrdenPedido[]);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error al obtener las órdenes de pedido:', error);
+        setLoading(false);
+      });
   }, []);
 
-  const [limite, setLimite] = useState(10); // Por defecto 10
+  if (loading) return <div>Cargando...</div>;
+
+  // Filtrado de datos
+  const dataFiltrada = data.filter(op => {
+    // Filtro de búsqueda general (en cliente o vendedor)
+    const searchLower = search.toLowerCase();
+    const matchSearch =
+      op.RazonSocialCliente?.toLowerCase().includes(searchLower) ||
+      op.Vendedor1?.toLowerCase().includes(searchLower);
+    // Filtros avanzados
+    const matchCliente = filtros.cliente === '' || (op.RazonSocialCliente?.toLowerCase().includes(filtros.cliente.toLowerCase()));
+    const matchVendedor = filtros.vendedor === '' || (op.Vendedor1?.toLowerCase().includes(filtros.vendedor.toLowerCase()));
+    const matchEstado = filtros.estado === '' || ((filtros.estado === 'activo' && op.Estado) || (filtros.estado === 'inactivo' && !op.Estado));
+    const matchFechaDesde = filtros.fechaDesde === '' || (op.FecRecepcion && op.FecRecepcion >= filtros.fechaDesde);
+    const matchFechaHasta = filtros.fechaHasta === '' || (op.FecRecepcion && op.FecRecepcion <= filtros.fechaHasta);
+    return matchSearch && matchCliente && matchVendedor && matchEstado && matchFechaDesde && matchFechaHasta;
+  });
 
   return (
     <>
@@ -129,21 +67,58 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
           borderRadius: '50px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
         }}>Buscar Registro / ORDEN PEDIDO</h1>
-        <input
-        style={{
-          backgroundColor: 'rgba(127, 227, 245, 0.5)',
-          color: 'darkblue',
-          width: '100%',
-          padding: '15px',
-          borderRadius: '10px',
-          border: '3px solid darkblue',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-          fontSize: '16px',
-          marginBottom: '15px'
-        }}
-        placeholder="Buscar por Cliente, Nombre Vendedor..."
-        ></input>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <input
+            style={{
+              backgroundColor: 'rgba(127, 227, 245, 0.5)',
+              color: 'darkblue',
+              width: '100%',
+              padding: '15px',
+              borderRadius: '10px',
+              border: '3px solid darkblue',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+              fontSize: '16px',
+            }}
+            placeholder="Buscar por Cliente o Vendedor..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+          <button
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '22px', color: 'darkblue' }}
+            onClick={() => setShowFilters(true)}
+            title="Filtros avanzados"
+          >
+            <FaFilter />
+          </button>
+        </div>
       </div>
+
+      {/* Modal de filtros */}
+      <Modal isOpen={showFilters} toggle={() => setShowFilters(false)}>
+        <ModalHeader toggle={() => setShowFilters(false)}>Filtros avanzados</ModalHeader>
+        <ModalBody>
+          <div className="form-group">
+            <label>Cliente:</label>
+            <input type="text" className="form-control" value={filtros.cliente} onChange={e => setFiltros({ ...filtros, cliente: e.target.value })} />
+            <label>Vendedor:</label>
+            <input type="text" className="form-control" value={filtros.vendedor} onChange={e => setFiltros({ ...filtros, vendedor: e.target.value })} />
+            <label>Estado:</label>
+            <select className="form-control" value={filtros.estado} onChange={e => setFiltros({ ...filtros, estado: e.target.value })}>
+              <option value="">Todos</option>
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+            <label>Fecha Recepción desde:</label>
+            <input type="date" className="form-control" value={filtros.fechaDesde} onChange={e => setFiltros({ ...filtros, fechaDesde: e.target.value })} />
+            <label>Fecha Recepción hasta:</label>
+            <input type="date" className="form-control" value={filtros.fechaHasta} onChange={e => setFiltros({ ...filtros, fechaHasta: e.target.value })} />
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <button className="btn btn-primary" onClick={() => setShowFilters(false)}>Aplicar</button>
+          <button className="btn btn-secondary" onClick={() => { setFiltros({ cliente: '', vendedor: '', estado: '', fechaDesde: '', fechaHasta: '' }); setShowFilters(false); }}>Limpiar</button>
+        </ModalFooter>
+      </Modal>
 
       <label>
         Mostrar&nbsp;
@@ -163,8 +138,6 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
           width: "200%",
           fontSize: "14px",
           tableLayout: "auto",
-
-          /*marginLeft: "0"*/
         }}
         >
           <thead>
@@ -186,85 +159,29 @@ const seleccionarGestor = (vendedor: Vendedor, caso: string): void => {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(data) && data.slice(0, limite).map(vendedor => (
-              <tr key={vendedor?.idVendedor ?? `${vendedor.numDocVendedor}-${Math.random()}`}>
-               <td>{vendedor.idVendedor}</td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               {/* <td>{vendedor.numDocVendedor}</td> */}
-               <td>{vendedor.nombreVendedor}</td>
-               <td>{vendedor.Estado ? "0" : "1"}</td>
-               <td className='sticky-col'>
-                  <button className="btn btn-primary" onClick={()=>seleccionarGestor(vendedor, "Editar")}>
-                    <EditIcon/>
-                  </button> {" "}
-                  <button className="btn btn-danger">
-                    <DeleteIcon/>
-                  </button>
+            {Array.isArray(dataFiltrada) && dataFiltrada.slice(0, limite).map(op => (
+              <tr key={op.IdOpci}>
+                <td>{op.IdOpci}</td>
+                <td>{op.RazonSocialCliente}</td>
+                <td>{op.ClienteFinal}</td>
+                <td>{op.ClienteProveedor}</td>
+                <td>{op.FecRecepcion?.substring(0, 10)}</td>
+                <td>{op.FecInicio?.substring(0, 10)}</td>
+                <td>{op.FecProcVi?.substring(0, 10)}</td>
+                <td>{op.FormaPago?.NombreFormaPago ?? ''}</td>
+                <td>{op.Moneda?.NombreMoneda ?? ''}</td>
+                <td>{op.TotalSinIgv}</td>
+                {/* <td>{op.NumDocVendedor}</td> */}
+                <td>{op.Vendedor1}</td>
+                <td>{op.Estado ? 'Activo' : 'Inactivo'}</td>
+                <td className='sticky-col'>
+                  <button className="btn btn-primary">Editar</button>{' '}
+                  <button className="btn btn-danger">Eliminar</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
-        {/* Modal para insertar un nuevo gestor de base de datos */}
-        <Modal isOpen={modalInsertar}>
-          <ModalHeader>Insertar Gestor de Base de Datos</ModalHeader>
-          <ModalBody>
-            <div className="form-group">
-              {/* <label>ID: </label>
-              <br />
-              <input type="text" className="form-control" name='idVendedor' onChange={handleChange}/>
-              <br /> */}
-              <label>Cliente</label>
-              <label>N° Documento: </label>
-              <br />
-              <input type="text" className="form-control" name='numDocVendedor' onChange={handleChange}/>
-              <br />
-              <label>Nombre Vendedor: </label>
-              <br />
-              <input type="text" className="form-control" name='nombreVendedor' onChange={handleChange}/>
-              <br />
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <button className="btn btn-primary" onClick={()=>peticionPost()}>Insertar</button>
-            <button className="btn btn-danger" onClick={()=>abrirCerrarModalInsertar()}>Cancelar</button>
-          </ModalFooter>
-        </Modal>
-
-        {/* Modal para editar un gestor de base de datos */}
-        <Modal isOpen={modalEditar}>
-            <ModalHeader>Editar Gestor de Base de Datos</ModalHeader>
-            <ModalBody>
-              <div className='form-group'>
-                <label>ID: </label>
-                <br />
-                <input type="text" className='form-control' name='idVendedor' readOnly value={gestorSeleccion && gestorSeleccion.idVendedor}/>
-                <br />
-                <label>N° Documento: </label>
-                <br />
-                <input type="text" className='form-control' name="numDocVendedor" onChange={handleChange} value={gestorSeleccion && gestorSeleccion.numDocVendedor}/>
-                <br />
-                <label>Nombre Vendedor: </label>
-                <br />
-                <input type="text" className='form-control' name='nombreVendedor' onChange={handleChange} value={gestorSeleccion && gestorSeleccion.nombreVendedor}/>
-                <br />
-              </div>
-            </ModalBody>
-            <ModalFooter>
-              <button className='btn btn-primary' onClick={()=>peticionPut()}>Editar</button>{" "}
-              <button className='btn btn-danger' onClick={()=>abrirCerrarModalEditar()}>Cancelar</button>
-            </ModalFooter>
-        </Modal>
-
       </div>
     </>
   );
