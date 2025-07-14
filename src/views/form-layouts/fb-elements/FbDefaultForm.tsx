@@ -19,8 +19,7 @@ import { getFormaPago } from '../../../services/api';
 import { getMonedas } from '../../../services/api';
 import BaseCard from '../../../components/BaseCard/BaseCard';
 import api from '../../../services/api';
-
-  import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 // Define FormData interface here if not imported
 export interface FormData {
@@ -133,7 +132,7 @@ const datosParaEnviar = {
   fechaProcesamientoVI: pedido.fechaProcesamientoVI ? pedido.fechaProcesamientoVI.format('YYYY-MM-DD') : '',
 };
 try {
-  await axios.post('https://localhost:7002/OrdenPedido', pedido);
+  await axios.post('https://localhost:7002/OrdenPedido', datosParaEnviar);
     alert('Pedido guardado correctamente');
     // Opcional: limpiar el formulario o actualizar la lista
 } catch (error) {
