@@ -20,6 +20,8 @@ import { getMonedas } from '../../../services/api';
 import BaseCard from '../../../components/BaseCard/BaseCard';
 import api from '../../../services/api';
 
+  import dayjs, { Dayjs } from 'dayjs';
+
 // Define FormData interface here if not imported
 export interface FormData {
   cliente: string;
@@ -89,9 +91,12 @@ const FbDefaultForm = () => {
     cliente: '',
     clienteFinal: '',
     clienteProveedor: '',
-    fechaRecepcion: '',
-    fechaInicio: '',
-    fechaProcesamientoVI: '',
+    // fechaRecepcion: '',
+    // fechaInicio: '',
+    // fechaProcesamientoVI: '',
+    fechaRecepcion: null as Dayjs | null,
+    fechaInicio: null as Dayjs | null,
+    fechaProcesamientoVI: null as Dayjs | null,
     formaPago: '',
     moneda: '',
     totalSinIGV: '',
@@ -121,6 +126,12 @@ const lideres = vendedores.filter(v => v.ibLider === true || v.ibLider === 1);
 
 // Guardar la orden de pedido
 const guardarPedido = async () => {
+const datosParaEnviar = {
+  ...pedido,
+  fechaRecepcion: pedido.fechaRecepcion ? pedido.fechaRecepcion.format('YYYY-MM-DD') : '',
+  fechaInicio: pedido.fechaInicio ? pedido.fechaInicio.format('YYYY-MM-DD') : '',
+  fechaProcesamientoVI: pedido.fechaProcesamientoVI ? pedido.fechaProcesamientoVI.format('YYYY-MM-DD') : '',
+};
 try {
   await axios.post('https://localhost:7002/OrdenPedido', pedido);
     alert('Pedido guardado correctamente');
@@ -305,21 +316,45 @@ React.useEffect(() => {
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
               <DatePicker
                 label="Fecha de Recepción"
-                sx={{ mb: 2, width: '100%' }}
+                value={pedido.fechaRecepcion}
+                onChange={(newValue) => setPedido(prev => ({ ...prev, fechaRecepcion: newValue }))}
+                slotProps={{
+                  textField: {
+                    size: 'small',
+                    sx: { fontSize: '13px', minWidth: 250 }
+                  }
+                }}
+                sx={{ mb: 2, fontSize: '13px', minWidth: 250 }}
               />
             </LocalizationProvider>
 
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
               <DatePicker
                 label="Fecha de Inicio"
-                sx={{ mb: 2, width: '100%' }}
+                value={pedido.fechaInicio}
+                onChange={(newValue) => setPedido(prev => ({ ...prev, fechaInicio: newValue }))}
+                slotProps={{
+                  textField: {
+                    size: 'small',
+                    sx: { fontSize: '13px', minWidth: 120 }
+                  }
+                }}
+                sx={{ mb: 2, fontSize: '13px', minWidth: 250 }}
               />
             </LocalizationProvider>
 
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
               <DatePicker
                 label="Fecha de Procesamiento VI"
-                sx={{ mb: 2, width: '100%' }}
+                value={pedido.fechaProcesamientoVI}
+                onChange={(newValue) => setPedido(prev =>({ ...prev, fechaProcesamientoVI: newValue}))}
+                slotProps={{
+                  textField: {
+                    size: 'small',
+                    sx: { fontSize: '13px', minWidth: 120 }
+                  }
+                }}
+                sx={{ mb: 2, fontSize: '13px', minWidth: 250 }}
               />
             </LocalizationProvider>
 
@@ -395,10 +430,30 @@ React.useEffect(() => {
             variant="outlined"
             name="totalSinIGV"
             value={pedido.totalSinIGV}
-            onChange={handleChange}
-            fullWidth
+            onChange={e => {
+              let value = e.target.value;
+              if (value.includes ('.')) {
+                const [entero, decimales] = value.split('.');
+                value = entero + '.' + (decimales || '').slice(0, 2);
+              }
+              setPedido(prev => ({ ...prev, totalSinIGV: value }));
+            }}
+            // fullWidth
+            size='small'
+            type='number'
+            inputProps={{ step: '0.01', min: '0', style: { MozAppearance: 'textfield'}
+             }}
             sx={{
-              mb: 2,
+              mb: 2, fontSize: '13px', minWidth: 250,
+              // Estilos para eliminar flechas en los campos numéricos
+              '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
+                '-webkit-appearance': 'none',
+                margin: 0,
+              },
+              // Oculta flechas en Firefox
+              '& input[type=number]': {
+                MozAppearance: 'textfield',
+              },
             }}
           />
 
@@ -495,8 +550,10 @@ React.useEffect(() => {
             value={pedido.nroOperacion}
             onChange={handleChange}
             fullWidth
+            size='small'
+            InputLabelProps={{ style: { fontSize: '13px' } }}
             sx={{
-              mb: 2,
+              mb: 2, fontSize: '13px', minWidth: 250
             }}
           />
 
@@ -508,8 +565,10 @@ React.useEffect(() => {
             value={pedido.nroReferenciaCliente}
             onChange={handleChange}
             fullWidth
+            size='small'
+            InputLabelProps={{ style: { fontSize: '13px' } }}
             sx={{
-              mb: 2,
+              mb: 2, fontSize: '13px', minWidth: 250
             }}
           />
 
@@ -521,8 +580,10 @@ React.useEffect(() => {
             value={pedido.ubrutaCotizacion}
             onChange={handleChange}
             fullWidth
+            size='small'
+            InputLabelProps={{ style: { fontSize: '13px' } }}
             sx={{
-              mb: 2,
+              mb: 2, fontSize: '13px', minWidth: 250
             }}
           />
 
