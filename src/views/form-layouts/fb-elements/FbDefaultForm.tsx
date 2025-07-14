@@ -211,7 +211,21 @@ React.useEffect(() => {
             options={clientes}
             getOptionLabel={(option) => option.razonSocial}
             value={clientes.find(c => c.idCliente === pedido.cliente) || null}
-            onChange={(_event, newValue) => setPedido(prev => ({ ...prev, cliente: newValue ? newValue.idCliente : '' }))}
+            onChange={(_event, newValue) => {
+              if (newValue) {
+                setPedido(prev => ({
+                  ...prev,
+                  cliente: newValue.idCliente,
+                  clienteFinal: newValue.idCliente,
+                  clienteProveedor: newValue.idCliente
+                }));
+              } else {
+                setPedido(prev => ({
+                  ...prev,
+                  cliente: ''
+                }));
+              }
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -233,28 +247,56 @@ React.useEffect(() => {
             disabled={loading}
           />
 
-          <TextField
-            id="cliente-final"
-            label="Cliente Final"
-            variant="outlined"
-            name="clienteFinal"
-            value={pedido.clienteFinal}
-            onChange={handleChange}
-            fullWidth
-            size="small"
-            sx={{ mb: 2, fontSize: '13px' }}
+          {/* CAMPO CLIENTE FINAL Y CLIENTE PROVEEDOR COMO AUTOCOMPLETE */}
+          {/* Estos campos se llenan automáticamente al seleccionar un cliente */}
+          <Autocomplete
+            id='autocomplete-cliente-final'
+            options={clientes}
+            getOptionLabel={(option) => option.razonSocial}
+            value={clientes.find(c => c.idCliente === pedido.clienteFinal) || null}
+            onChange={(_event, newValue) => setPedido(prev => ({ ...prev, clienteFinal: newValue ? newValue.idCliente : '' }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Cliente Final"
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { fontSize: '13px' },
+                }}
+                InputLabelProps={{ style: { fontSize: '13px' } }}
+                sx={{ mb: 2, minWidth: 220, fontSize: '13px' }}
+              />
+            )}
+            sx={{ width: 250, fontSize: '13px' }}
+            ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
+            disabled={loading}
           />
 
-          <TextField
-            id="cliente-proveedor"
-            label="Cliente Proveedor"
-            variant="outlined"
-            name="clienteProveedor"
-            value={pedido.clienteProveedor}
-            onChange={handleChange}
-            fullWidth
-            size="small"
-            sx={{ mb: 2, fontSize: '13px' }}
+          <Autocomplete
+            id='autocomplete-cliente-proveedor'
+            options={clientes}
+            getOptionLabel={(option) => option.razonSocial}
+            value={clientes.find(c => c.idCliente === pedido.clienteProveedor) || null}
+            onChange={(_event, newValue) => setPedido(prev => ({ ...prev, clienteProveedor: newValue ? newValue.idCliente : '' }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Cliente Proveedor"
+                variant="outlined"
+                size="small"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { fontSize: '13px' },
+                }}
+                InputLabelProps={{ style: { fontSize: '13px' } }}
+                sx={{ mb: 2, minWidth: 220, fontSize: '13px' }}
+              />
+            )}
+            sx={{ width: 250, fontSize: '13px' }}
+            ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
+            disabled={loading}
           />
 
         </Box>
@@ -309,31 +351,6 @@ React.useEffect(() => {
             ListboxProps={{ style: { fontSize: '13px', maxHeight: 200 } }}
             disabled={loading}
           />
-
-          {/* <TextField
-            fullWidth
-            id="standard-select-number-forma-pago"
-            variant="outlined"
-            select
-            label="Forma de Pago"
-            name="formaPago"
-            value={pedido.formaPago}
-            onChange={handleChange}
-            size="small"
-            sx={{ mb: 2, fontSize: '13px' }}
-          >
-            {loading ? (
-              <MenuItem disabled>Cargando formas de pago...</MenuItem>
-            ) : formaPago.length === 0 ? (
-              <MenuItem disabled>No hay formas de pago disponibles</MenuItem>
-            ) : (
-              formaPago.map((fp, idx) => (
-                <MenuItem key={fp.idFp || idx} value={fp.idFp} style={{ fontSize: '13px' }}>
-                  {fp.descripcionFp}
-                </MenuItem>
-              ))
-            )}
-          </TextField> */}
 
           {/* CAMPO MONEDA SOLO SÍMBOLO */}
           <Autocomplete
