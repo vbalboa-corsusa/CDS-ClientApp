@@ -220,8 +220,10 @@ const App = () => {
                     </>
                   )}
                 </div>
-                <button className="btn btn-primary" onClick={handleFilterClose}>Aplicar</button>{' '}
-                <button className="btn btn-secondary" onClick={() => { setFiltros({ cliente: '', vendedor: '', estado: '', fechaDesde: '', fechaHasta: '' }); handleFilterClose(); }}>Limpiar</button>
+                <div style={{ marginTop:20, display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <button className="btn btn-primary" onClick={handleFilterClose}>Aplicar</button>{' '}
+                  <button className="btn btn-secondary" onClick={() => { setFiltros({ cliente: '', vendedor: '', estado: '', fechaDesde: '', fechaHasta: '' }); }}>Limpiar</button>
+                </div>
               </div>
             </Popover>
         </div>
@@ -266,27 +268,35 @@ const App = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(dataFiltrada) && dataFiltrada.slice(0, limite).map(op => (
-              <tr key={op.IdOpci}>
-                <td>{op.IdOpci}</td>
-                <td>{op.RazonSocialCliente}</td>
-                <td>{op.ClienteFinal}</td>
-                <td>{op.ClienteProveedor}</td>
-                <td>{op.FecRecepcion?.substring(0, 10)}</td>
-                <td>{op.FecInicio?.substring(0, 10)}</td>
-                <td>{op.FecProcVi?.substring(0, 10)}</td>
-                <td>{op.FormaPago?.NombreFormaPago ?? ''}</td>
-                <td>{op.Moneda?.NombreMoneda ?? ''}</td>
-                <td>{op.TotalSinIgv}</td>
-                {/* <td>{op.NumDocVendedor}</td> */}
-                <td>{op.Vendedor1}</td>
-                <td>{op.Estado ? 'Activo' : 'Inactivo'}</td>
-                <td className='sticky-col'>
-                  <button className="btn btn-primary">Editar</button>{' '}
-                  <button className="btn btn-danger">Eliminar</button>
+            {dataFiltrada.length === 0 ? (
+              <tr>
+                <td colSpan={13} style={{ textAlign: 'left', color: '#000', fontStyle: 'italic', fontSize: 15, padding: '30px' }}>
+                  No se encontraron registros.
                 </td>
               </tr>
-            ))}
+            ) : (
+              dataFiltrada.slice(0, limite).map(op => (
+                <tr key={op.IdOpci}>
+                  <td>{op.IdOpci}</td>
+                  <td>{op.RazonSocialCliente}</td>
+                  <td>{op.ClienteFinal}</td>
+                  <td>{op.ClienteProveedor}</td>
+                  <td>{op.FecRecepcion?.substring(0, 10)}</td>
+                  <td>{op.FecInicio?.substring(0, 10)}</td>
+                  <td>{op.FecProcVi?.substring(0, 10)}</td>
+                  <td>{op.FormaPago?.NombreFormaPago ?? ''}</td>
+                  <td>{op.Moneda?.NombreMoneda ?? ''}</td>
+                  <td>{op.TotalSinIgv}</td>
+                  {/* <td>{op.NumDocVendedor}</td> */}
+                  <td>{op.Vendedor1}</td>
+                  <td>{op.Estado ? 'Activo' : 'Inactivo'}</td>
+                  <td className='sticky-col'>
+                    <button className="btn btn-primary">Editar</button>{' '}
+                    <button className="btn btn-danger">Eliminar</button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
