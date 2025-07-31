@@ -20,6 +20,7 @@ import { getMonedas } from '../../../services/api';
 import BaseCard from '../../../components/BaseCard/BaseCard';
 import api from '../../../services/api';
 import { Dayjs } from 'dayjs';
+import axios from 'axios';
 
 // Define FormData interface here if not imported
 export interface FormData {
@@ -42,7 +43,7 @@ export interface FormData {
   comisionCompartida: boolean;
 }
 
-// Define Clientes interface if not imported
+// Define Vendedor interface if not imported
 export interface Vendedor {
   idVendedor: string;
   nombreVendedor: string;
@@ -53,6 +54,7 @@ export interface Vendedor {
 export interface Clientes {
   idCliente: string;
   razonSocial: string;
+  numDocumento: string;
 }
 
 // Define FormaPago interface if not imported
@@ -109,6 +111,18 @@ const FbDefaultForm = () => {
     comisionCompartida: false,
   });
 
+// Filtra los clientes únicos por idCliente
+const clientesUnicos = React.useMemo(() => {
+  const seen = new Set();
+  return clientes
+    .filter(c => !!c.razonSocial && c.razonSocial.trim() !== '')
+    .filter(c => {
+      if (seen.has(c.razonSocial)) return false;
+      seen.add(c.razonSocial);
+      return true;
+  });
+}, [clientes]);
+
 // Maneja el cambio de los campos del formulario
 const handleChange = (
   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -125,20 +139,36 @@ const lideres = vendedores.filter(v => v.ibLider === true || v.ibLider === 1);
 
 // Guardar la orden de pedido
 const guardarPedido = async () => {
-const datosParaEnviar = {
-  ...pedido,
-  fechaRecepcion: pedido.fechaRecepcion ? pedido.fechaRecepcion.format('YYYY-MM-DD') : '',
-  fechaInicio: pedido.fechaInicio ? pedido.fechaInicio.format('YYYY-MM-DD') : '',
-  fechaProcesamientoVI: pedido.fechaProcesamientoVI ? pedido.fechaProcesamientoVI.format('YYYY-MM-DD') : '',
-};
-try {
-  await axios.post('https://localhost:7002/OrdenPedido', datosParaEnviar);
+  const datosParaEnviar = {
+    // ...pedido, // Copia todos los campos del estado
+    // Sobrescribe con los nombres y valores que espera el back:
+    IdFp: pedido.formaPago ? Number(pedido.formaPago) : null,
+    IdCliente: pedido.cliente ? Number(pedido.cliente) : null,
+    IdVendedor: pedido.vendedor ? Number(pedido.vendedor) : null,
+    FecRecepcion: pedido.fechaRecepcion ? pedido.fechaRecepcion.format('YYYY-MM-DD') : null,
+    FecInicio: pedido.fechaInicio ? pedido.fechaInicio.format('YYYY-MM-DD') : null,
+    FecProcVi: pedido.fechaProcesamientoVI ? pedido.fechaProcesamientoVI.format('YYYY-MM-DD') : null,
+    RazonSocialCliente: clientes.find(c => c.idCliente === pedido.cliente)?.razonSocial || null,
+    NumOp: pedido.nroOperacion || null,
+    IdMda: pedido.moneda ? Number(pedido.moneda) : null,
+    TotalSinIgv: pedido.totalSinIGV ? Number(pedido.totalSinIGV) : null,
+    NumRefCliente: pedido.nroReferenciaCliente || null,
+    ClienteFinal: clientes.find(c => c.idCliente === pedido.clienteFinal)?.razonSocial || null,
+    ClienteProveedor: clientes.find(c => c.idCliente === pedido.clienteProveedor)?.razonSocial || null,
+    Vendedor1: vendedores.find(v => v.idVendedor === pedido.vendedor1)?.nombreVendedor || null,
+    Vendedor2: vendedores.find(v => v.idVendedor === pedido.vendedor2)?.nombreVendedor || null,
+    Lider: vendedores.find(v => v.idVendedor === pedido.lider)?.nombreVendedor || null,
+    UbrutaCoti: pedido.ubrutaCotizacion || null,
+    ComisionCompartida: pedido.comisionCompartida,
+  };
+  try {
+    await axios.post('https://localhost:7002/OrdenPedido', datosParaEnviar);
     alert('Pedido guardado correctamente');
     // Opcional: limpiar el formulario o actualizar la lista
-} catch (error) {
+  } catch (error) {
     alert('Error al guardar el pedido');
     console.error(error);
-}
+  }
 };
 
   // Obtener vendedores al cargar el componente
@@ -218,8 +248,14 @@ React.useEffect(() => {
           {/* CAMPO CLIENTE COMO AUTOCOMPLETE */}
           <Autocomplete
             id="autocomplete-cliente"
-            options={clientes}
+            options={clientesUnicos}
             getOptionLabel={(option) => option.razonSocial}
+            // getOptionLabel={(option) =>
+            //   option.razonSocial
+            //     ?`${option.razonSocial} (${option.numDocumento}) || ${option.numDocumento}`
+            //     : option.numDocumento || option.razonSocial || ''
+            // }
+            isOptionEqualToValue={(option, value) => option.idCliente === value.idCliente}
             value={clientes.find(c => c.idCliente === pedido.cliente) || null}
             onChange={(_event, newValue) => {
               if (newValue) {
@@ -261,8 +297,14 @@ React.useEffect(() => {
           {/* Estos campos se llenan automáticamente al seleccionar un cliente */}
           <Autocomplete
             id='autocomplete-cliente-final'
-            options={clientes}
-            getOptionLabel={(option) => option.razonSocial}
+            options={clientesUnicos}
+            getOptionLabel={(option) => option.razonSocial || ''}
+            // getOptionLabel={(option) =>
+            //   option.razonSocial
+            //     ?`${option.razonSocial} (${option.numDocumento}) || ${option.numDocumento}`
+            //     : option.numDocumento || option.razonSocial || ''
+            // }
+            isOptionEqualToValue={(option, value) => option.idCliente === value.idCliente}
             value={clientes.find(c => c.idCliente === pedido.clienteFinal) || null}
             onChange={(_event, newValue) => setPedido(prev => ({ ...prev, clienteFinal: newValue ? newValue.idCliente : '' }))}
             renderInput={(params) => (
@@ -286,8 +328,14 @@ React.useEffect(() => {
 
           <Autocomplete
             id='autocomplete-cliente-proveedor'
-            options={clientes}
-            getOptionLabel={(option) => option.razonSocial}
+            options={clientesUnicos}
+            getOptionLabel={(option) => option.razonSocial || ''}
+            // getOptionLabel={(option) =>
+            //   option.razonSocial
+            //     ?`${option.razonSocial} (${option.numDocumento}) || ${option.numDocumento}`
+            //     : option.numDocumento || option.razonSocial || ''
+            // }
+            isOptionEqualToValue={(option, value) => option.idCliente === value.idCliente}
             value={clientes.find(c => c.idCliente === pedido.clienteProveedor) || null}
             onChange={(_event, newValue) => setPedido(prev => ({ ...prev, clienteProveedor: newValue ? newValue.idCliente : '' }))}
             renderInput={(params) => (
@@ -335,7 +383,7 @@ React.useEffect(() => {
                 slotProps={{
                   textField: {
                     size: 'small',
-                    sx: { fontSize: '13px', minWidth: 120 }
+                    sx: { fontSize: '13px', minWidth: 250 }
                   }
                 }}
                 sx={{ mb: 2, fontSize: '13px', minWidth: 250 }}
@@ -350,7 +398,7 @@ React.useEffect(() => {
                 slotProps={{
                   textField: {
                     size: 'small',
-                    sx: { fontSize: '13px', minWidth: 120 }
+                    sx: { fontSize: '13px', minWidth: 250 }
                   }
                 }}
                 sx={{ mb: 2, fontSize: '13px', minWidth: 250 }}
@@ -446,7 +494,7 @@ React.useEffect(() => {
               mb: 2, fontSize: '13px', minWidth: 250,
               // Estilos para eliminar flechas en los campos numéricos
               '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
-                '-webkit-appearance': 'none',
+                WebkitAppearance: 'none',
                 margin: 0,
               },
               // Oculta flechas en Firefox
@@ -548,9 +596,9 @@ React.useEffect(() => {
             name="nroOperacion"
             value={pedido.nroOperacion}
             onChange={handleChange}
-            fullWidth
+            // fullWidth
             size='small'
-            InputLabelProps={{ style: { fontSize: '13px' } }}
+            InputLabelProps={{ style: { fontSize: '13px', } }}
             sx={{
               mb: 2, fontSize: '13px', minWidth: 250
             }}
@@ -563,7 +611,7 @@ React.useEffect(() => {
             name="nroReferenciaCliente"
             value={pedido.nroReferenciaCliente}
             onChange={handleChange}
-            fullWidth
+            // fullWidth
             size='small'
             InputLabelProps={{ style: { fontSize: '13px' } }}
             sx={{
@@ -578,7 +626,7 @@ React.useEffect(() => {
             name="ubrutaCotizacion"
             value={pedido.ubrutaCotizacion}
             onChange={handleChange}
-            fullWidth
+            // fullWidth
             size='small'
             InputLabelProps={{ style: { fontSize: '13px' } }}
             sx={{
@@ -591,8 +639,10 @@ React.useEffect(() => {
               <Checkbox
                 checked={pedido.comisionCompartida}
                 onChange={handleChange}
+                style={{ fontSize: '25px' }}
                 name="comisionCompartida"
                 inputProps={{ 'aria-label': 'primary checkbox' }}
+                sx={{ '& .MuiSvgIcon-root': { fontSize: 20 } }} // Cambia el tamaño del ícono
               />
               }
               label="Comisión compartida"

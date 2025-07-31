@@ -275,8 +275,8 @@ const App = () => {
                 </td>
               </tr>
             ) : (
-              dataFiltrada.slice(0, limite).map(op => (
-                <tr key={op.IdOpci}>
+              dataFiltrada.slice(0, limite).map((op,idx) => (
+                <tr key={`${op.IdOpci}-${idx}`}>
                   <td>{op.IdOpci}</td>
                   <td>{op.RazonSocialCliente}</td>
                   <td>{op.ClienteFinal}</td>
